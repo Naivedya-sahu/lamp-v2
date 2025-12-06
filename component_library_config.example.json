@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Component library configuration - Example showing different visibility settings",
+    "visibility_types": {
+      "viewed": "Always visible - shown in menus and available for direct selection",
+      "cycled": "Available in cycle mode - symbols that rotate through when user cycles",
+      "hidden": "Not shown - excluded from menus and cycle rotation"
+    }
+  },
+  "symbols": {
+    "g1087": {
+      "visibility": "cycled",
+      "name": "resistor",
+      "category": "passive_components",
+      "description": "Basic resistor symbol"
+    },
+    "g1092": {
+      "visibility": "cycled",
+      "name": "capacitor",
+      "category": "passive_components",
+      "description": "Capacitor symbol"
+    },
+    "g1058": {
+      "visibility": "cycled",
+      "name": "inductor",
+      "category": "passive_components",
+      "description": "Inductor coil"
+    },
+    "g1263": {
+      "visibility": "viewed",
+      "name": "npn_transistor",
+      "category": "semiconductors",
+      "description": "NPN bipolar junction transistor"
+    },
+    "g1100": {
+      "visibility": "viewed",
+      "name": "pnp_transistor",
+      "category": "semiconductors",
+      "description": "PNP bipolar junction transistor"
+    },
+    "g1162": {
+      "visibility": "viewed",
+      "name": "nmos_transistor",
+      "category": "semiconductors",
+      "description": "N-channel MOSFET"
+    },
+    "g1253": {
+      "visibility": "viewed",
+      "name": "pmos_transistor",
+      "category": "semiconductors",
+      "description": "P-channel MOSFET"
+    },
+    "g1136": {
+      "visibility": "cycled",
+      "name": "diode",
+      "category": "semiconductors",
+      "description": "Standard diode"
+    },
+    "g6082": {
+      "visibility": "hidden",
+      "name": "deprecated_symbol_1",
+      "category": "deprecated",
+      "description": "Old symbol version - not used"
+    },
+    "g4365": {
+      "visibility": "hidden",
+      "name": "deprecated_symbol_2",
+      "category": "deprecated",
+      "description": "Old symbol version - not used"
+    }
+  }
+}
