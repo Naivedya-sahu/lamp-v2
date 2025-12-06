@@ -42,3 +42,7 @@ resources/repos/rmkit/src/.rmkit.h_cpp/
 resources/repos/rmkit/src/.lamp_cpp/
 resources/repos/rmkit/src/.iago_cpp/
 resources/repos/rmkit/src/.genie_cpp/
+
+# Component library generated files
+exported_symbols/
+/tmp/*.svg

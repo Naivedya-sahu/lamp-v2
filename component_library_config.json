@@ -1,0 +1,1078 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Component library configuration"
+  },
+  "symbols": {
+    "g6082": {
+      "visibility": "hidden",
+      "name": "g6082",
+      "category": "general"
+    },
+    "g4365": {
+      "visibility": "viewed",
+      "name": "g4365",
+      "category": "general"
+    },
+    "g3794": {
+      "visibility": "viewed",
+      "name": "g3794",
+      "category": "general"
+    },
+    "g3955": {
+      "visibility": "viewed",
+      "name": "g3955",
+      "category": "general"
+    },
+    "g2999": {
+      "visibility": "viewed",
+      "name": "g2999",
+      "category": "general"
+    },
+    "g1474": {
+      "visibility": "viewed",
+      "name": "g1474",
+      "category": "general"
+    },
+    "g6275": {
+      "visibility": "viewed",
+      "name": "g6275",
+      "category": "general"
+    },
+    "g1087": {
+      "visibility": "cycled",
+      "name": "g1087",
+      "category": "general"
+    },
+    "g1092": {
+      "visibility": "cycled",
+      "name": "g1092",
+      "category": "general"
+    },
+    "g1058": {
+      "visibility": "cycled",
+      "name": "g1058",
+      "category": "general"
+    },
+    "g1263": {
+      "visibility": "viewed",
+      "name": "g1263",
+      "category": "general"
+    },
+    "g1100": {
+      "visibility": "viewed",
+      "name": "g1100",
+      "category": "general"
+    },
+    "g1162": {
+      "visibility": "viewed",
+      "name": "g1162",
+      "category": "general"
+    },
+    "g1253": {
+      "visibility": "viewed",
+      "name": "g1253",
+      "category": "general"
+    },
+    "g1136": {
+      "visibility": "viewed",
+      "name": "g1136",
+      "category": "general"
+    },
+    "g1193": {
+      "visibility": "viewed",
+      "name": "g1193",
+      "category": "general"
+    },
+    "g1630": {
+      "visibility": "viewed",
+      "name": "g1630",
+      "category": "general"
+    },
+    "g1205": {
+      "visibility": "viewed",
+      "name": "g1205",
+      "category": "general"
+    },
+    "g1270": {
+      "visibility": "viewed",
+      "name": "g1270",
+      "category": "general"
+    },
+    "g1299": {
+      "visibility": "viewed",
+      "name": "g1299",
+      "category": "general"
+    },
+    "g1304": {
+      "visibility": "viewed",
+      "name": "g1304",
+      "category": "general"
+    },
+    "g1417": {
+      "visibility": "viewed",
+      "name": "g1417",
+      "category": "general"
+    },
+    "g1439": {
+      "visibility": "viewed",
+      "name": "g1439",
+      "category": "general"
+    },
+    "g1457": {
+      "visibility": "viewed",
+      "name": "g1457",
+      "category": "general"
+    },
+    "g1447": {
+      "visibility": "viewed",
+      "name": "g1447",
+      "category": "general"
+    },
+    "g1579": {
+      "visibility": "viewed",
+      "name": "g1579",
+      "category": "general"
+    },
+    "g1566": {
+      "visibility": "viewed",
+      "name": "g1566",
+      "category": "general"
+    },
+    "g1251": {
+      "visibility": "viewed",
+      "name": "g1251",
+      "category": "general"
+    },
+    "g1523": {
+      "visibility": "viewed",
+      "name": "g1523",
+      "category": "general"
+    },
+    "g1616": {
+      "visibility": "viewed",
+      "name": "g1616",
+      "category": "general"
+    },
+    "g1589": {
+      "visibility": "viewed",
+      "name": "g1589",
+      "category": "general"
+    },
+    "g1635": {
+      "visibility": "viewed",
+      "name": "g1635",
+      "category": "general"
+    },
+    "g1646": {
+      "visibility": "viewed",
+      "name": "g1646",
+      "category": "general"
+    },
+    "g1668": {
+      "visibility": "viewed",
+      "name": "g1668",
+      "category": "general"
+    },
+    "g184": {
+      "visibility": "viewed",
+      "name": "g184",
+      "category": "general"
+    },
+    "g1676": {
+      "visibility": "viewed",
+      "name": "g1676",
+      "category": "general"
+    },
+    "g188": {
+      "visibility": "viewed",
+      "name": "g188",
+      "category": "general"
+    },
+    "g1032": {
+      "visibility": "viewed",
+      "name": "g1032",
+      "category": "general"
+    },
+    "g1080": {
+      "visibility": "viewed",
+      "name": "g1080",
+      "category": "general"
+    },
+    "g2699": {
+      "visibility": "viewed",
+      "name": "g2699",
+      "category": "general"
+    },
+    "g2396": {
+      "visibility": "viewed",
+      "name": "g2396",
+      "category": "general"
+    },
+    "g1137": {
+      "visibility": "viewed",
+      "name": "g1137",
+      "category": "general"
+    },
+    "g1143": {
+      "visibility": "viewed",
+      "name": "g1143",
+      "category": "general"
+    },
+    "g1169": {
+      "visibility": "viewed",
+      "name": "g1169",
+      "category": "general"
+    },
+    "g1149": {
+      "visibility": "viewed",
+      "name": "g1149",
+      "category": "general"
+    },
+    "g1179": {
+      "visibility": "viewed",
+      "name": "g1179",
+      "category": "general"
+    },
+    "g1173": {
+      "visibility": "viewed",
+      "name": "g1173",
+      "category": "general"
+    },
+    "g1187": {
+      "visibility": "viewed",
+      "name": "g1187",
+      "category": "general"
+    },
+    "g1200": {
+      "visibility": "viewed",
+      "name": "g1200",
+      "category": "general"
+    },
+    "g1206": {
+      "visibility": "viewed",
+      "name": "g1206",
+      "category": "general"
+    },
+    "g1212": {
+      "visibility": "viewed",
+      "name": "g1212",
+      "category": "general"
+    },
+    "g1486": {
+      "visibility": "viewed",
+      "name": "g1486",
+      "category": "general"
+    },
+    "g1298": {
+      "visibility": "viewed",
+      "name": "g1298",
+      "category": "general"
+    },
+    "g1351": {
+      "visibility": "viewed",
+      "name": "g1351",
+      "category": "general"
+    },
+    "g1435": {
+      "visibility": "viewed",
+      "name": "g1435",
+      "category": "general"
+    },
+    "g1421": {
+      "visibility": "viewed",
+      "name": "g1421",
+      "category": "general"
+    },
+    "g1443": {
+      "visibility": "viewed",
+      "name": "g1443",
+      "category": "general"
+    },
+    "g1848": {
+      "visibility": "viewed",
+      "name": "g1848",
+      "category": "general"
+    },
+    "g1558": {
+      "visibility": "viewed",
+      "name": "g1558",
+      "category": "general"
+    },
+    "g1642": {
+      "visibility": "viewed",
+      "name": "g1642",
+      "category": "general"
+    },
+    "g1699": {
+      "visibility": "viewed",
+      "name": "g1699",
+      "category": "general"
+    },
+    "g1762": {
+      "visibility": "viewed",
+      "name": "g1762",
+      "category": "general"
+    },
+    "g2769": {
+      "visibility": "viewed",
+      "name": "g2769",
+      "category": "general"
+    },
+    "g6465": {
+      "visibility": "viewed",
+      "name": "g6465",
+      "category": "general"
+    },
+    "g1951": {
+      "visibility": "viewed",
+      "name": "g1951",
+      "category": "general"
+    },
+    "g2033": {
+      "visibility": "viewed",
+      "name": "g2033",
+      "category": "general"
+    },
+    "g2053": {
+      "visibility": "viewed",
+      "name": "g2053",
+      "category": "general"
+    },
+    "g2041": {
+      "visibility": "viewed",
+      "name": "g2041",
+      "category": "general"
+    },
+    "g2100": {
+      "visibility": "viewed",
+      "name": "g2100",
+      "category": "general"
+    },
+    "g1229": {
+      "visibility": "viewed",
+      "name": "g1229",
+      "category": "general"
+    },
+    "g1236": {
+      "visibility": "viewed",
+      "name": "g1236",
+      "category": "general"
+    },
+    "g1334": {
+      "visibility": "viewed",
+      "name": "g1334",
+      "category": "general"
+    },
+    "g1302": {
+      "visibility": "viewed",
+      "name": "g1302",
+      "category": "general"
+    },
+    "g1349": {
+      "visibility": "viewed",
+      "name": "g1349",
+      "category": "general"
+    },
+    "g1378": {
+      "visibility": "viewed",
+      "name": "g1378",
+      "category": "general"
+    },
+    "g1423": {
+      "visibility": "viewed",
+      "name": "g1423",
+      "category": "general"
+    },
+    "g1440": {
+      "visibility": "viewed",
+      "name": "g1440",
+      "category": "general"
+    },
+    "g1450": {
+      "visibility": "viewed",
+      "name": "g1450",
+      "category": "general"
+    },
+    "g1564": {
+      "visibility": "viewed",
+      "name": "g1564",
+      "category": "general"
+    },
+    "g1570": {
+      "visibility": "viewed",
+      "name": "g1570",
+      "category": "general"
+    },
+    "g1581": {
+      "visibility": "viewed",
+      "name": "g1581",
+      "category": "general"
+    },
+    "g1607": {
+      "visibility": "viewed",
+      "name": "g1607",
+      "category": "general"
+    },
+    "g1634": {
+      "visibility": "viewed",
+      "name": "g1634",
+      "category": "general"
+    },
+    "g1660": {
+      "visibility": "viewed",
+      "name": "g1660",
+      "category": "general"
+    },
+    "g1682": {
+      "visibility": "viewed",
+      "name": "g1682",
+      "category": "general"
+    },
+    "g1722": {
+      "visibility": "viewed",
+      "name": "g1722",
+      "category": "general"
+    },
+    "g1693": {
+      "visibility": "viewed",
+      "name": "g1693",
+      "category": "general"
+    },
+    "g1763": {
+      "visibility": "viewed",
+      "name": "g1763",
+      "category": "general"
+    },
+    "g1732": {
+      "visibility": "viewed",
+      "name": "g1732",
+      "category": "general"
+    },
+    "g1992": {
+      "visibility": "viewed",
+      "name": "g1992",
+      "category": "general"
+    },
+    "g1939": {
+      "visibility": "viewed",
+      "name": "g1939",
+      "category": "general"
+    },
+    "g1945": {
+      "visibility": "viewed",
+      "name": "g1945",
+      "category": "general"
+    },
+    "g1952": {
+      "visibility": "viewed",
+      "name": "g1952",
+      "category": "general"
+    },
+    "g1958": {
+      "visibility": "viewed",
+      "name": "g1958",
+      "category": "general"
+    },
+    "g1964": {
+      "visibility": "viewed",
+      "name": "g1964",
+      "category": "general"
+    },
+    "g1975": {
+      "visibility": "viewed",
+      "name": "g1975",
+      "category": "general"
+    },
+    "g1845": {
+      "visibility": "viewed",
+      "name": "g1845",
+      "category": "general"
+    },
+    "g1986": {
+      "visibility": "viewed",
+      "name": "g1986",
+      "category": "general"
+    },
+    "g1865": {
+      "visibility": "viewed",
+      "name": "g1865",
+      "category": "general"
+    },
+    "g2013": {
+      "visibility": "viewed",
+      "name": "g2013",
+      "category": "general"
+    },
+    "g2188": {
+      "visibility": "viewed",
+      "name": "g2188",
+      "category": "general"
+    },
+    "g2198": {
+      "visibility": "viewed",
+      "name": "g2198",
+      "category": "general"
+    },
+    "g2279": {
+      "visibility": "viewed",
+      "name": "g2279",
+      "category": "general"
+    },
+    "g2269": {
+      "visibility": "viewed",
+      "name": "g2269",
+      "category": "general"
+    },
+    "g2315": {
+      "visibility": "viewed",
+      "name": "g2315",
+      "category": "general"
+    },
+    "g2343": {
+      "visibility": "viewed",
+      "name": "g2343",
+      "category": "general"
+    },
+    "g2397": {
+      "visibility": "viewed",
+      "name": "g2397",
+      "category": "general"
+    },
+    "g2425": {
+      "visibility": "viewed",
+      "name": "g2425",
+      "category": "general"
+    },
+    "g2488": {
+      "visibility": "viewed",
+      "name": "g2488",
+      "category": "general"
+    },
+    "g2503": {
+      "visibility": "viewed",
+      "name": "g2503",
+      "category": "general"
+    },
+    "g2540": {
+      "visibility": "viewed",
+      "name": "g2540",
+      "category": "general"
+    },
+    "g2564": {
+      "visibility": "viewed",
+      "name": "g2564",
+      "category": "general"
+    },
+    "g2589": {
+      "visibility": "viewed",
+      "name": "g2589",
+      "category": "general"
+    },
+    "g2615": {
+      "visibility": "viewed",
+      "name": "g2615",
+      "category": "general"
+    },
+    "g2656": {
+      "visibility": "viewed",
+      "name": "g2656",
+      "category": "general"
+    },
+    "g2662": {
+      "visibility": "viewed",
+      "name": "g2662",
+      "category": "general"
+    },
+    "g2710": {
+      "visibility": "viewed",
+      "name": "g2710",
+      "category": "general"
+    },
+    "g2864": {
+      "visibility": "viewed",
+      "name": "g2864",
+      "category": "general"
+    },
+    "g2979": {
+      "visibility": "viewed",
+      "name": "g2979",
+      "category": "general"
+    },
+    "g3019": {
+      "visibility": "viewed",
+      "name": "g3019",
+      "category": "general"
+    },
+    "g3319": {
+      "visibility": "viewed",
+      "name": "g3319",
+      "category": "general"
+    },
+    "g3311": {
+      "visibility": "viewed",
+      "name": "g3311",
+      "category": "general"
+    },
+    "g3330": {
+      "visibility": "viewed",
+      "name": "g3330",
+      "category": "general"
+    },
+    "g3434": {
+      "visibility": "viewed",
+      "name": "g3434",
+      "category": "general"
+    },
+    "g3462": {
+      "visibility": "viewed",
+      "name": "g3462",
+      "category": "general"
+    },
+    "g3454": {
+      "visibility": "viewed",
+      "name": "g3454",
+      "category": "general"
+    },
+    "g3532": {
+      "visibility": "viewed",
+      "name": "g3532",
+      "category": "general"
+    },
+    "g3869": {
+      "visibility": "viewed",
+      "name": "g3869",
+      "category": "general"
+    },
+    "g3691": {
+      "visibility": "viewed",
+      "name": "g3691",
+      "category": "general"
+    },
+    "g3697": {
+      "visibility": "viewed",
+      "name": "g3697",
+      "category": "general"
+    },
+    "g3677": {
+      "visibility": "viewed",
+      "name": "g3677",
+      "category": "general"
+    },
+    "g3684": {
+      "visibility": "viewed",
+      "name": "g3684",
+      "category": "general"
+    },
+    "g3807": {
+      "visibility": "viewed",
+      "name": "g3807",
+      "category": "general"
+    },
+    "g3887": {
+      "visibility": "viewed",
+      "name": "g3887",
+      "category": "general"
+    },
+    "g3993": {
+      "visibility": "viewed",
+      "name": "g3993",
+      "category": "general"
+    },
+    "g4025": {
+      "visibility": "viewed",
+      "name": "g4025",
+      "category": "general"
+    },
+    "g4048": {
+      "visibility": "viewed",
+      "name": "g4048",
+      "category": "general"
+    },
+    "g4037": {
+      "visibility": "viewed",
+      "name": "g4037",
+      "category": "general"
+    },
+    "g1831": {
+      "visibility": "viewed",
+      "name": "g1831",
+      "category": "general"
+    },
+    "g4131": {
+      "visibility": "viewed",
+      "name": "g4131",
+      "category": "general"
+    },
+    "g4174": {
+      "visibility": "viewed",
+      "name": "g4174",
+      "category": "general"
+    },
+    "g893": {
+      "visibility": "viewed",
+      "name": "g893",
+      "category": "general"
+    },
+    "g1728": {
+      "visibility": "viewed",
+      "name": "g1728",
+      "category": "general"
+    },
+    "g1859": {
+      "visibility": "viewed",
+      "name": "g1859",
+      "category": "general"
+    },
+    "g1852": {
+      "visibility": "viewed",
+      "name": "g1852",
+      "category": "general"
+    },
+    "g1046": {
+      "visibility": "viewed",
+      "name": "g1046",
+      "category": "general"
+    },
+    "g3198": {
+      "visibility": "viewed",
+      "name": "g3198",
+      "category": "general"
+    },
+    "g1063": {
+      "visibility": "viewed",
+      "name": "g1063",
+      "category": "general"
+    },
+    "g1081": {
+      "visibility": "viewed",
+      "name": "g1081",
+      "category": "general"
+    },
+    "g1091": {
+      "visibility": "viewed",
+      "name": "g1091",
+      "category": "general"
+    },
+    "g2925": {
+      "visibility": "viewed",
+      "name": "g2925",
+      "category": "general"
+    },
+    "g2971": {
+      "visibility": "viewed",
+      "name": "g2971",
+      "category": "general"
+    },
+    "g3007": {
+      "visibility": "viewed",
+      "name": "g3007",
+      "category": "general"
+    },
+    "g3066": {
+      "visibility": "viewed",
+      "name": "g3066",
+      "category": "general"
+    },
+    "g3153": {
+      "visibility": "viewed",
+      "name": "g3153",
+      "category": "general"
+    },
+    "g3166": {
+      "visibility": "viewed",
+      "name": "g3166",
+      "category": "general"
+    },
+    "g3204": {
+      "visibility": "viewed",
+      "name": "g3204",
+      "category": "general"
+    },
+    "g3270": {
+      "visibility": "viewed",
+      "name": "g3270",
+      "category": "general"
+    },
+    "g3396": {
+      "visibility": "viewed",
+      "name": "g3396",
+      "category": "general"
+    },
+    "g3486": {
+      "visibility": "viewed",
+      "name": "g3486",
+      "category": "general"
+    },
+    "g3466": {
+      "visibility": "viewed",
+      "name": "g3466",
+      "category": "general"
+    },
+    "g3447": {
+      "visibility": "viewed",
+      "name": "g3447",
+      "category": "general"
+    },
+    "g3627": {
+      "visibility": "viewed",
+      "name": "g3627",
+      "category": "general"
+    },
+    "g3718": {
+      "visibility": "viewed",
+      "name": "g3718",
+      "category": "general"
+    },
+    "g3736": {
+      "visibility": "viewed",
+      "name": "g3736",
+      "category": "general"
+    },
+    "g3747": {
+      "visibility": "viewed",
+      "name": "g3747",
+      "category": "general"
+    },
+    "g3763": {
+      "visibility": "viewed",
+      "name": "g3763",
+      "category": "general"
+    },
+    "g3788": {
+      "visibility": "viewed",
+      "name": "g3788",
+      "category": "general"
+    },
+    "g3781": {
+      "visibility": "viewed",
+      "name": "g3781",
+      "category": "general"
+    },
+    "g3847": {
+      "visibility": "viewed",
+      "name": "g3847",
+      "category": "general"
+    },
+    "g3800": {
+      "visibility": "viewed",
+      "name": "g3800",
+      "category": "general"
+    },
+    "g3806": {
+      "visibility": "viewed",
+      "name": "g3806",
+      "category": "general"
+    },
+    "g3894": {
+      "visibility": "viewed",
+      "name": "g3894",
+      "category": "general"
+    },
+    "g3830": {
+      "visibility": "viewed",
+      "name": "g3830",
+      "category": "general"
+    },
+    "g3836": {
+      "visibility": "viewed",
+      "name": "g3836",
+      "category": "general"
+    },
+    "g3959": {
+      "visibility": "viewed",
+      "name": "g3959",
+      "category": "general"
+    },
+    "g3906": {
+      "visibility": "viewed",
+      "name": "g3906",
+      "category": "general"
+    },
+    "g3912": {
+      "visibility": "viewed",
+      "name": "g3912",
+      "category": "general"
+    },
+    "g4001": {
+      "visibility": "viewed",
+      "name": "g4001",
+      "category": "general"
+    },
+    "g3965": {
+      "visibility": "viewed",
+      "name": "g3965",
+      "category": "general"
+    },
+    "g3971": {
+      "visibility": "viewed",
+      "name": "g3971",
+      "category": "general"
+    },
+    "g4132": {
+      "visibility": "viewed",
+      "name": "g4132",
+      "category": "general"
+    },
+    "g4201": {
+      "visibility": "viewed",
+      "name": "g4201",
+      "category": "general"
+    },
+    "g4270": {
+      "visibility": "viewed",
+      "name": "g4270",
+      "category": "general"
+    },
+    "g4345": {
+      "visibility": "viewed",
+      "name": "g4345",
+      "category": "general"
+    },
+    "g1080-3": {
+      "visibility": "viewed",
+      "name": "g1080-3",
+      "category": "general"
+    },
+    "g4297": {
+      "visibility": "viewed",
+      "name": "g4297",
+      "category": "general"
+    },
+    "g4303": {
+      "visibility": "viewed",
+      "name": "g4303",
+      "category": "general"
+    },
+    "g4309": {
+      "visibility": "viewed",
+      "name": "g4309",
+      "category": "general"
+    },
+    "g5818": {
+      "visibility": "viewed",
+      "name": "g5818",
+      "category": "general"
+    },
+    "g5810": {
+      "visibility": "viewed",
+      "name": "g5810",
+      "category": "general"
+    },
+    "g5872": {
+      "visibility": "viewed",
+      "name": "g5872",
+      "category": "general"
+    },
+    "g6031": {
+      "visibility": "viewed",
+      "name": "g6031",
+      "category": "general"
+    },
+    "g6042": {
+      "visibility": "viewed",
+      "name": "g6042",
+      "category": "general"
+    },
+    "g6062": {
+      "visibility": "viewed",
+      "name": "g6062",
+      "category": "general"
+    },
+    "g6118": {
+      "visibility": "viewed",
+      "name": "g6118",
+      "category": "general"
+    },
+    "g6141": {
+      "visibility": "viewed",
+      "name": "g6141",
+      "category": "general"
+    },
+    "g6232": {
+      "visibility": "viewed",
+      "name": "g6232",
+      "category": "general"
+    },
+    "g6245": {
+      "visibility": "viewed",
+      "name": "g6245",
+      "category": "general"
+    },
+    "g6281": {
+      "visibility": "viewed",
+      "name": "g6281",
+      "category": "general"
+    },
+    "g6339": {
+      "visibility": "viewed",
+      "name": "g6339",
+      "category": "general"
+    },
+    "g6361": {
+      "visibility": "viewed",
+      "name": "g6361",
+      "category": "general"
+    },
+    "g6383": {
+      "visibility": "viewed",
+      "name": "g6383",
+      "category": "general"
+    },
+    "g6414": {
+      "visibility": "viewed",
+      "name": "g6414",
+      "category": "general"
+    },
+    "g6438": {
+      "visibility": "viewed",
+      "name": "g6438",
+      "category": "general"
+    },
+    "g6471": {
+      "visibility": "viewed",
+      "name": "g6471",
+      "category": "general"
+    },
+    "g6496": {
+      "visibility": "viewed",
+      "name": "g6496",
+      "category": "general"
+    },
+    "g6620": {
+      "visibility": "viewed",
+      "name": "g6620",
+      "category": "general"
+    },
+    "g6627": {
+      "visibility": "viewed",
+      "name": "g6627",
+      "category": "general"
+    },
+    "g6634": {
+      "visibility": "viewed",
+      "name": "g6634",
+      "category": "general"
+    },
+    "g3087": {
+      "visibility": "viewed",
+      "name": "g3087",
+      "category": "general"
+    },
+    "g3096": {
+      "visibility": "viewed",
+      "name": "g3096",
+      "category": "general"
+    },
+    "g6719": {
+      "visibility": "viewed",
+      "name": "g6719",
+      "category": "general"
+    },
+    "g6798": {
+      "visibility": "viewed",
+      "name": "g6798",
+      "category": "general"
+    }
+  }
+}
