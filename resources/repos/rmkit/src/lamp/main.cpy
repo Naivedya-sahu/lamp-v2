@@ -21,9 +21,6 @@ int move_pts = 500
 double denom = 360/(2*3.14)
 bool bsleep = false
 
-// ============================================
-
-
 rm_version := util::get_remarkable_version()
 #define DISPLAYWIDTH 1404
 #define DISPLAYHEIGHT 1872.0
@@ -61,14 +58,12 @@ int get_touch_x(int x):
     return x
   return (MTWIDTH - x) / MT_X_SCALAR
 
+
 int get_touch_y(int y):
   if rm_version == util::RM_DEVICE_ID_E::RM2:
     return DISPLAYHEIGHT - y
   return (MTHEIGHT - y) / MT_Y_SCALAR
 
-// ============================================
-// FINGER SUPPORT
-// ============================================
 
 vector<input_event> finger_clear():
   vector<input_event> ev
@@ -103,10 +98,6 @@ vector<input_event> finger_up()
   ev.push_back(input_event{ type:EV_ABS, code:ABS_MT_TRACKING_ID, value: -1 })
   ev.push_back(input_event{ type:EV_SYN, code:SYN_REPORT, value:1 })
   return ev
-
-// ============================================
-// PEN SUPPORT
-// ============================================
 
 vector<input_event> pen_clear():
   vector<input_event> ev
@@ -158,44 +149,44 @@ vector<input_event> pen_up():
 
   return ev
 
-// ============================================
-// ERASER SUPPORT
-// ============================================
-
-vector<input_event> eraser_clear():
-  vector<input_event> ev
-  ev.push_back(input_event{ type:EV_ABS, code:ABS_X, value: -1 })
-  ev.push_back(input_event{ type:EV_ABS, code:ABS_DISTANCE, value: -1 })
-  ev.push_back(input_event{ type:EV_ABS, code:ABS_PRESSURE, value: -1})
-  ev.push_back(input_event{ type:EV_ABS, code:ABS_Y, value: -1 })
-  ev.push_back(input_event{ type:EV_SYN, code:SYN_REPORT, value:1 })
-  return ev
-
-vector<input_event> eraser_down(int x, y, points=10):
+// CORRECTED: Eraser with proper pressure and width
+vector<input_event> eraser_down(int x, y, int pressure=1700):
   vector<input_event> ev
   ev.push_back(input_event{ type:EV_SYN, code:SYN_REPORT, value:1 })
   ev.push_back(input_event{ type:EV_KEY, code:BTN_TOOL_RUBBER, value: 1 })
   ev.push_back(input_event{ type:EV_KEY, code:BTN_TOUCH, value: 1 })
   ev.push_back(input_event{ type:EV_ABS, code:ABS_Y, value: get_pen_x(x) })
   ev.push_back(input_event{ type:EV_ABS, code:ABS_X, value: get_pen_y(y) })
-  ev.push_back(input_event{ type:EV_ABS, code:ABS_DISTANCE, value: 15 })
-  ev.push_back(input_event{ type:EV_ABS, code:ABS_PRESSURE, value: 1200 })
+  ev.push_back(input_event{ type:EV_ABS, code:ABS_DISTANCE, value: 0 })
+  ev.push_back(input_event{ type:EV_ABS, code:ABS_PRESSURE, value: pressure })  // 1500-1800 range
+  
+  // Set tilt for consistent contact area
+  ev.push_back(input_event{ type:EV_ABS, code:ABS_TILT_X, value: 50 })
+  ev.push_back(input_event{ type:EV_ABS, code:ABS_TILT_Y, value: -150 })
   ev.push_back(input_event{ type:EV_SYN, code:SYN_REPORT, value:1 })
-  for int i = 0; i < points; i++:
-    ev.push_back(input_event{ type:EV_ABS, code:ABS_PRESSURE, value: 1200 })
-    ev.push_back(input_event{ type:EV_ABS, code:ABS_PRESSURE, value: 1200 })
-    ev.push_back(input_event{ type:EV_SYN, code:SYN_REPORT, value:1 })
+  
   return ev
 
-vector<input_event> eraser_move(int ox, oy, x, y, int points=10):
-  ev := eraser_down(ox, oy)
+vector<input_event> eraser_move(int ox, oy, x, y, int pressure=1700):
+  vector<input_event> ev
+  
+  // Denser points for complete coverage
+  int points = max(abs(x - ox), abs(y - oy)) / 3
+  if points < 5:
+    points = 5
+    
   double dx = float(x - ox) / float(points)
   double dy = float(y - oy) / float(points)
-  ev.push_back(input_event{ type:EV_SYN, code:SYN_REPORT, value:1 })
+  
   for int i = 0; i <= points; i++:
-    ev.push_back(input_event{ type:EV_ABS, code:ABS_Y, value: get_pen_x(ox + (i*dx)) })
-    ev.push_back(input_event{ type:EV_ABS, code:ABS_X, value: get_pen_y(oy + (i*dy)) })
+    int curr_x = ox + (i * dx)
+    int curr_y = oy + (i * dy)
+    
+    ev.push_back(input_event{ type:EV_ABS, code:ABS_Y, value: get_pen_x(curr_x) })
+    ev.push_back(input_event{ type:EV_ABS, code:ABS_X, value: get_pen_y(curr_y) })
+    ev.push_back(input_event{ type:EV_ABS, code:ABS_PRESSURE, value: pressure })
     ev.push_back(input_event{ type:EV_SYN, code:SYN_REPORT, value:1 })
+  
   return ev
 
 vector<input_event> eraser_up():
@@ -203,11 +194,11 @@ vector<input_event> eraser_up():
   ev.push_back(input_event{ type:EV_SYN, code:SYN_REPORT, value:1 })
   ev.push_back(input_event{ type:EV_KEY, code:BTN_TOOL_RUBBER, value: 0 })
   ev.push_back(input_event{ type:EV_KEY, code:BTN_TOUCH, value: 0 })
+  ev.push_back(input_event{ type:EV_ABS, code:ABS_PRESSURE, value: 0 })
   ev.push_back(input_event{ type:EV_SYN, code:SYN_REPORT, value:1 })
+  
   return ev
 
-// ============================================
-// ============================================
 
 def btn_press(int button):
   pass
@@ -232,7 +223,6 @@ def write_events(int fd, vector<input_event> events, int sleep_time=1000):
 
 int finger_x, finger_y, pen_x, pen_y
 void act_on_line(string);
-
 void pen_draw_rectangle(int x1, y1, x2, y2):
   if x2 == -1:
     x2 = pen_x
@@ -247,42 +237,13 @@ void pen_draw_rectangle(int x1, y1, x2, y2):
 
 void pen_draw_line(int x1, y1, x2, y2):
   if x2 == -1:
-      x2 = pen_x
-      y2 = pen_y
-
-    debug "DRAWING LINE", x1, y1, x2, y2
-    act_on_line("pen down " + to_string(x1) + " " + to_string(y1))
-    act_on_line("pen move " + to_string(x2) + " " + to_string(y2))
-    act_on_line("pen up")
-
-// Eraser drawing functions
-void eraser_draw_rectangle(int x1, y1, x2, y2):
-  if x2 == -1:
     x2 = pen_x
     y2 = pen_y
-  debug "ERASING RECT", x1, y1, x2, y2
-  act_on_line("eraser down " + to_string(x1) + " " + to_string(y1))
-  act_on_line("eraser move " + to_string(x1) + " " + to_string(y2))
-  act_on_line("eraser move " + to_string(x2) + " " + to_string(y2))
-  act_on_line("eraser move " + to_string(x2) + " " + to_string(y1))
-  act_on_line("eraser move " + to_string(x1) + " " + to_string(y1))
-  act_on_line("eraser up ")
 
-void eraser_draw_line(int x1, y1, x2, y2):
-  if x2 == -1:
-    x2 = pen_x
-    y2 = pen_y
-  debug "ERASING LINE", x1, y1, x2, y2
-  act_on_line("eraser down " + to_string(x1) + " " + to_string(y1))
-  act_on_line("eraser move " + to_string(x2) + " " + to_string(y2))
-  act_on_line("eraser up")
-
-void eraser_fill_area(int x1, y1, x2, y2, int spacing=20):
-  debug "ERASING AREA", x1, y1, x2, y2
-  for int y = y1; y <= y2; y += spacing:
-    act_on_line("eraser down " + to_string(x1) + " " + to_string(y))
-    act_on_line("eraser move " + to_string(x2) + " " + to_string(y))
-    act_on_line("eraser up")
+  debug "DRAWING LINE", x1, y1, x2, y2
+  act_on_line("pen down " + to_string(x1) + " " + to_string(y1))
+  act_on_line("pen move " + to_string(x2) + " " + to_string(y2))
+  act_on_line("pen up")
 
 void trace_arc(int ox, oy, r1, r2, a1=0, a2=360, step=1):
   for i := a1; i < a2+10; i+=step:
@@ -385,6 +346,26 @@ void pen_draw_bezier(vector<int> coors):
   act_on_line("pen down " + to_string(coors[0]) + " " + to_string(coors[1]))
   trace_bezier(coors)
   act_on_line("pen up")
+
+void eraser_fill_area(int x1, y1, x2, y2, int spacing=8):
+  // Spacing of 8px matches physical eraser width at pressure 1700
+  debug "ERASING AREA FILL", x1, y1, x2, y2
+  
+  // Start eraser at first position
+  write_events(pen_fd, eraser_down(x1, y1, 1700))
+  
+  // Sweep back and forth without lifting the eraser
+  bool direction = true  // true = left-to-right, false = right-to-left
+  for int y = y1; y <= y2; y += spacing:
+    if direction:
+      write_events(pen_fd, eraser_move(x1, y, x2, y, 1700))
+    else:
+      write_events(pen_fd, eraser_move(x2, y, x1, y, 1700))
+    direction = !direction
+  
+  // Lift eraser only at the end
+  write_events(pen_fd, eraser_up())
+
 
 
 int touch_fd, pen_fd
@@ -500,8 +481,6 @@ void act_on_line(string line):
 
     else:
       debug "UNKNOWN ACTION", action, "IN", line
-  
-  // ============================================
   else if tool == "finger":
     if action == "up":
       write_events(touch_fd, finger_up())
@@ -518,39 +497,6 @@ void act_on_line(string line):
       finger_y = y
     else:
       debug "UNKNOWN ACTION", action, "IN", line
-
-  else if tool == "eraser":
-    if action == "down":
-      ss >> x >> y
-      write_events(pen_fd, eraser_down(x, y))
-      pen_x = x
-      pen_y = y
-    else if action == "move":
-      ss >> x >> y
-      write_events(pen_fd, eraser_move(pen_x, pen_y, x, y))
-      pen_x = x
-      pen_y = y
-    else if action == "up":
-      write_events(pen_fd, eraser_up())
-    else if action == "line":
-      ss >> ox >> oy >> x >> y
-      eraser_draw_line(ox, oy, x, y)
-    else if action == "rectangle":
-      ss >> ox >> oy >> x >> y
-      eraser_draw_rectangle(ox, oy, x, y)
-    else if action == "fill":
-      ss >> ox >> oy >> x >> y
-      int spacing = 15
-      if len(tokens) == 7:
-        spacing = stoi(tokens[6])
-      eraser_fill_area(ox, oy, x, y, spacing)
-    else if action == "clear":
-      ss >> ox >> oy >> x >> y
-      eraser_fill_area(ox, oy, x, y, 10)
-    else :
-        debug "UNKNOWN ERASER ACTION " , action , " IN " , line
-
-  // ============================================    
   else if tool == "sleep":
     int val = strtol(action.c_str(), NULL, 10) 
     if action == "on"
@@ -566,6 +512,9 @@ void act_on_line(string line):
       debug "UNKNOWN ACTION", action, "IN", line
   else:
     debug "UNKNOWN TOOL", tool, "IN", line
+
+
+
 
 def main(int argc, char **argv):
   #ifndef REMARKABLE
