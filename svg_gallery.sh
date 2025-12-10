@@ -105,7 +105,7 @@ draw_svg() {
     echo -ne "${CYAN}[$index/$total]${NC} ${YELLOW}$filename${NC} ... "
     
     # Build Python command
-    local py_cmd="python3 svg_to_lamp_improved.py '$svg_file'"
+    local py_cmd="python3 svg_to_lamp_svgpathtools.py '$svg_file'"
     [ -n "$SCALE" ] && py_cmd="$py_cmd $SCALE"
     
     # Generate pen commands

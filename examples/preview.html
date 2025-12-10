@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Pen Commands — Fixed Device Preview + View Area Controls</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      --bg:#0f1720; --panel:#0b1220; --accent:#3b82f6; --muted:#94a3b8; --paper:#f8fafc;
+    }
+    html,body { height:100%; margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--paper); }
+    .wrap { display:flex; gap:12px; padding:12px; height:100vh; box-sizing:border-box; }
+    .left { width:420px; min-width:320px; display:flex; flex-direction:column; gap:8px; }
+    .panel { background:var(--panel); border-radius:8px; padding:10px; box-shadow:0 6px 18px rgba(2,6,23,0.6); }
+    textarea { width:100%; height:220px; background:#071026; color:var(--paper); border:1px solid #132235; border-radius:6px; padding:10px; resize:vertical; font-family:monospace; font-size:13px; line-height:1.3; }
+    label { font-size:13px; color:var(--muted); display:block; margin-bottom:6px; }
+    .controls { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    button { background:var(--accent); color:#fff; border:none; padding:8px 10px; border-radius:6px; cursor:pointer; font-weight:600; }
+    button.ghost { background:transparent; border:1px solid #123; color:var(--paper); }
+    .small { font-size:12px; color:var(--muted); }
+    .canvas-wrap { flex:1; display:flex; flex-direction:column; gap:8px; align-items:center; }
+    .device { background:#fff; border-radius:8px; box-shadow:0 10px 30px rgba(2,6,23,0.6); overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; }
+    .device-inner { display:block; }
+    .status { font-family:monospace; color:var(--muted); font-size:12px; white-space:pre; overflow:auto; max-height:150px; padding:8px; background:#061016; border-radius:6px; }
+    .row { display:flex; gap:8px; align-items:center; }
+    .field { display:flex; gap:6px; align-items:center; }
+    input[type=number], input[type=text] { width:80px; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:6px; }
+    .pan-buttons { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+    .coords { font-family:monospace; color:#ddd; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="left">
+      <div class="panel">
+        <label>Pen commands (paste here or load .cmds/.txt)</label>
+        <textarea id="cmds" placeholder="Paste commands. Example: # BOUNDS 0 0 45 24 ..."></textarea>
+
+        <div style="display:flex; justify-content:space-between; margin-top:8px;">
+          <div class="controls">
+            <input type="file" id="file" accept=".txt,.cmd,.log" />
+            <button id="parseBtn">Parse</button>
+            <button id="clearBtn">Clear</button>
+          </div>
+          <div style="text-align:right">
+            <div class="small">Device logical area: <strong>1404 × 1872</strong></div>
+            <div class="small">Use BOUNDS mapping: <input id="useBounds" type="checkbox" checked /></div>
+          </div>
+        </div>
+
+        <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+          <div class="field"><label class="small">Margin (px)</label><input id="marginPx" type="number" value="20" min="0" /></div>
+          <div class="field"><label class="small">Or Margin (%)</label><input id="marginPct" type="number" value="2" min="0" max="50" /></div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <div class="controls">
+            <button id="fitBounds">Fit to BOUNDS</button>
+            <button id="centerBounds">Center BOUNDS</button>
+            <button id="fitAll">Fit All</button>
+            <button id="resetView">Reset View</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="panel">
+        <label class="small">View area & navigation</label>
+        <div class="grid" style="margin-bottom:6px;">
+          <div><label class="small">View X</label><input id="viewX" type="number" /></div>
+          <div><label class="small">View Y</label><input id="viewY" type="number" /></div>
+          <div><label class="small">View W</label><input id="viewW" type="number" /></div>
+          <div><label class="small">View H</label><input id="viewH" type="number" /></div>
+        </div>
+        <div class="row" style="margin-bottom:6px;">
+          <div class="pan-buttons">
+            <button id="panUp">▲</button>
+            <button id="panLeft">◀</button>
+            <button id="panRight">▶</button>
+            <button id="panDown">▼</button>
+            <button id="zoomIn">Zoom +</button>
+            <button id="zoomOut">Zoom -</button>
+          </div>
+          <div style="margin-left:auto;">
+            <div class="small">Visual scale</div>
+            <input id="visualScale" type="range" min="0.1" max="1.0" step="0.05" value="0.5" />
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button id="showFull">Show full device</button>
+          <button id="exportPng">Export PNG (view)</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <label class="small">Status / controls</label>
+        <div id="status" class="status">Idle</div>
+      </div>
+    </div>
+
+    <div class="canvas-wrap">
+      <div class="panel small" style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+        <div>Preview (logical internal drawing buffer is 1404 × 1872). Use view area controls to move/zoom.</div>
+        <div class="coords">Pointer: <span id="pointer">—</span></div>
+      </div>
+
+      <div id="device" class="device">
+        <!-- visible canvas; sized in JS to visual size; drawing produced from internal buffer according to viewRect -->
+        <canvas id="visible" class="device-inner" role="img" aria-label="preview"></canvas>
+      </div>
+
+      <div style="display:flex; gap:12px; margin-top:6px;">
+        <div class="small">Current BOUNDS: <span id="bounds">none</span></div>
+        <div style="margin-left:auto" class="small">View coords: <span id="viewCoords">—</span></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/*
+  Full HTML viewer:
+  - Internal buffer (bufferCanvas) is device logical size: DEVICE_W x DEVICE_H (1404x1872).
+  - Commands are drawn onto the buffer using a mapping:
+      - If "Use BOUNDS mapping" is checked and # BOUNDS exists, the bounds are mapped into device area (with margin).
+      - Otherwise commands are assumed already in device coordinates.
+  - visible canvas displays a scaled, cropped presentation of the buffer determined by viewRect.
+    We present the source rectangle from the buffer (sx,sy,sw,sh) stretched to the full visible canvas size.
+  - Controls let user set viewRect, pan, zoom, fit to bounds, center, and export the displayed view as PNG.
+*/
+
+const DEVICE_W = 1404, DEVICE_H = 1872;
+
+// DOM
+const cmdsEl = document.getElementById('cmds');
+const parseBtn = document.getElementById('parseBtn');
+const clearBtn = document.getElementById('clearBtn');
+const fileInput = document.getElementById('file');
+const statusEl = document.getElementById('status');
+const boundsEl = document.getElementById('bounds');
+const useBounds = document.getElementById('useBounds');
+const marginPxEl = document.getElementById('marginPx');
+const marginPctEl = document.getElementById('marginPct');
+const fitBoundsBtn = document.getElementById('fitBounds');
+const centerBoundsBtn = document.getElementById('centerBounds');
+const fitAllBtn = document.getElementById('fitAll');
+const resetViewBtn = document.getElementById('resetView');
+
+const viewXEl = document.getElementById('viewX');
+const viewYEl = document.getElementById('viewY');
+const viewWEl = document.getElementById('viewW');
+const viewHEl = document.getElementById('viewH');
+
+const panUp = document.getElementById('panUp');
+const panDown = document.getElementById('panDown');
+const panLeft = document.getElementById('panLeft');
+const panRight = document.getElementById('panRight');
+const zoomIn = document.getElementById('zoomIn');
+const zoomOut = document.getElementById('zoomOut');
+const visualScaleEl = document.getElementById('visualScale');
+const showFullBtn = document.getElementById('showFull');
+const exportPngBtn = document.getElementById('exportPng');
+
+const pointerEl = document.getElementById('pointer');
+const viewCoordsEl = document.getElementById('viewCoords');
+
+const visibleCanvas = document.getElementById('visible');
+const visibleCtx = visibleCanvas.getContext('2d', { alpha: false });
+
+// internal offscreen buffer where we draw complete device-space image
+const bufferCanvas = document.createElement('canvas');
+bufferCanvas.width = DEVICE_W;
+bufferCanvas.height = DEVICE_H;
+const bufferCtx = bufferCanvas.getContext('2d', { alpha: false });
+
+// state
+let parsedCommands = [];
+let fileBounds = null; // [minx,miny,maxx,maxy] from # BOUNDS
+let mapping = null;     // function map(x,y) -> device coords
+let viewRect = { x:0, y:0, w: DEVICE_W, h: DEVICE_H }; // source rect in buffer to present
+let visualScale = parseFloat(visualScaleEl.value) || 0.5;
+
+// initialize visible canvas size according to visualScale
+function sizeVisibleCanvas(scale) {
+  // visible canvas logical size (internal drawing buffer) remains DEVICE_W x DEVICE_H for convenience
+  // but we will draw the source rect scaled to that logical size, and then CSS scale visually by scale.
+  // Set CSS pixel size:
+  const deviceEl = document.getElementById('device');
+  const pixelW = Math.round(DEVICE_W * scale);
+  const pixelH = Math.round(DEVICE_H * scale);
+  visibleCanvas.style.width = pixelW + 'px';
+  visibleCanvas.style.height = pixelH + 'px';
+  // Internally keep visible canvas logical size equal to DEVICE_W x DEVICE_H for high-quality export and easy mapping
+  visibleCanvas.width = DEVICE_W;
+  visibleCanvas.height = DEVICE_H;
+  deviceEl.style.width = pixelW + 'px';
+  deviceEl.style.height = pixelH + 'px';
+}
+sizeVisibleCanvas(visualScale);
+
+// Utilities
+function logStatus(msg) { statusEl.textContent = msg; }
+
+function parseCommands(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+  const parsed = [];
+  let bounds = null;
+  for (let line of lines) {
+    if (line.startsWith('#')) {
+      const m = line.match(/BOUNDS\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)/i);
+      if (m) {
+        bounds = [Number(m[1]), Number(m[2]), Number(m[3]), Number(m[4])];
+      }
+      continue;
+    }
+    const toks = line.split(/\s+/);
+    const tool = toks[0].toLowerCase();
+    const action = (toks[1] || '').toLowerCase();
+    const args = toks.slice(2).map(v => isNaN(Number(v)) ? v : Number(v));
+    parsed.push({ raw: line, tool, action, args });
+  }
+  return { parsed, bounds };
+}
+
+// compute mapping from input bounds to device coordinates
+function computeMappingFromBounds(bounds, targetW = DEVICE_W, targetH = DEVICE_H, marginPx = 0, marginPct = 0, preserveAspect = true) {
+  // bounds: [minx,miny,maxx,maxy]
+  if (!bounds) {
+    // no mapping - identity
+    return { map: (x,y) => [x,y], srcBounds: [0,0,targetW,targetH], targetW, targetH };
+  }
+  let [minx,miny,maxx,maxy] = bounds;
+  let w = Math.max(1, maxx - minx);
+  let h = Math.max(1, maxy - miny);
+
+  let margin = marginPx;
+  if (marginPct && marginPct > 0) {
+    margin = Math.min(targetW, targetH) * (marginPct / 100.0);
+  }
+  const effW = Math.max(1, targetW - 2 * margin);
+  const effH = Math.max(1, targetH - 2 * margin);
+
+  let sx, sy;
+  if (preserveAspect) {
+    const s = Math.min(effW / w, effH / h);
+    sx = sy = s;
+  } else {
+    sx = effW / w;
+    sy = effH / h;
+  }
+
+  const scaledW = w * sx;
+  const scaledH = h * sy;
+  const offsetX = margin + (effW - scaledW) / 2;
+  const offsetY = margin + (effH - scaledH) / 2;
+
+  function map(x, y) {
+    const X = (x - minx) * sx + offsetX;
+    const Y = (y - miny) * sy + offsetY;
+    return [X, Y];
+  }
+  return { map, srcBounds: [minx, miny, maxx, maxy], sx, sy, offsetX, offsetY, margin, targetW, targetH };
+}
+
+// draw entire parsed commands into bufferCtx using map function
+function drawIntoBuffer(commands, mapFn) {
+  // clear
+  bufferCtx.setTransform(1,0,0,1,0,0);
+  bufferCtx.fillStyle = '#fff';
+  bufferCtx.fillRect(0,0,bufferCanvas.width, bufferCanvas.height);
+
+  bufferCtx.lineCap = 'round';
+  bufferCtx.lineJoin = 'round';
+  bufferCtx.strokeStyle = '#000';
+  bufferCtx.lineWidth = 2;
+
+  let penDown = false;
+  let px = 0, py = 0;
+
+  for (let cmd of commands) {
+    const t = cmd.tool;
+    const a = cmd.action;
+    const args = cmd.args || [];
+    if (t === 'pen' || t === 'fastpen') {
+      if (a === 'down') {
+        let x = args[0], y = args[1];
+        let [X,Y] = mapFn ? mapFn(x,y) : [x,y];
+        px = X; py = Y; penDown = true;
+        // draw tiny dot
+        bufferCtx.beginPath(); bufferCtx.fillStyle = '#000'; bufferCtx.arc(px,py,1.2,0,Math.PI*2); bufferCtx.fill();
+      } else if (a === 'move') {
+        // support "pen move x y" or "pen move ox oy x y"
+        let x,y;
+        if (args.length === 2) { x = args[0]; y = args[1]; }
+        else if (args.length >= 4) { x = args[2]; y = args[3]; }
+        else continue;
+        let [X,Y] = mapFn ? mapFn(x,y) : [x,y];
+        if (penDown) {
+          bufferCtx.beginPath(); bufferCtx.moveTo(px,py); bufferCtx.lineTo(X,Y); bufferCtx.stroke();
+        } else {
+          bufferCtx.beginPath(); bufferCtx.fillStyle = '#000'; bufferCtx.arc(X,Y,1.2,0,Math.PI*2); bufferCtx.fill();
+        }
+        px = X; py = Y;
+      } else if (a === 'up') {
+        penDown = false;
+      } else if (a === 'line') {
+        const [x1,y1,x2,y2] = args;
+        let [X1,Y1] = mapFn ? mapFn(x1,y1) : [x1,y1];
+        let [X2,Y2] = mapFn ? mapFn(x2,y2) : [x2,y2];
+        bufferCtx.beginPath(); bufferCtx.moveTo(X1,Y1); bufferCtx.lineTo(X2,Y2); bufferCtx.stroke();
+        px = X2; py = Y2; penDown = false;
+      } else if (a === 'rectangle') {
+        const [x1,y1,x2,y2] = args;
+        let [X1,Y1] = mapFn ? mapFn(x1,y1) : [x1,y1];
+        let [X2,Y2] = mapFn ? mapFn(x2,y2) : [x2,y2];
+        bufferCtx.beginPath(); bufferCtx.moveTo(X1,Y1); bufferCtx.lineTo(X1,Y2); bufferCtx.lineTo(X2,Y2); bufferCtx.lineTo(X2,Y1); bufferCtx.closePath(); bufferCtx.stroke();
+        penDown = false;
+      } else if (a === 'circle') {
+        const [cx,cy,r] = args;
+        let [CX,CY] = mapFn ? mapFn(cx,cy) : [cx,cy];
+        // approximate radius scaling by average of sx,sy if mapping present
+        let R = r;
+        if (mapFn && mapping && mapping.sx !== undefined && mapping.sy !== undefined) {
+          R = r * ( (mapping.sx + mapping.sy) / 2 );
+        }
+        bufferCtx.beginPath(); bufferCtx.arc(CX,CY,R,0,Math.PI*2); bufferCtx.stroke();
+      } else if (a === 'bezier' || a === 'arc') {
+        // draw raw path approximations by connecting integer points available in args
+        const coords = args.filter(v => typeof v === 'number');
+        if (coords.length >= 4) {
+          const pts = [];
+          for (let i=0;i+1<coords.length;i+=2) {
+            let [X,Y] = mapFn ? mapFn(coords[i], coords[i+1]) : [coords[i], coords[i+1]];
+            pts.push([X,Y]);
+          }
+          if (pts.length >= 2) {
+            bufferCtx.beginPath();
+            bufferCtx.moveTo(pts[0][0], pts[0][1]);
+            for (let i=1;i<pts.length;i++) bufferCtx.lineTo(pts[i][0], pts[i][1]);
+            bufferCtx.stroke();
+          }
+        }
+      }
+    } else if (t === 'finger') {
+      // faint strokes
+      if (a === 'down') {
+        let [x,y] = args;
+        let [X,Y] = mapFn ? mapFn(x,y) : [x,y];
+        bufferCtx.save(); bufferCtx.globalAlpha = 0.12; bufferCtx.beginPath(); bufferCtx.arc(X,Y,8,0,Math.PI*2); bufferCtx.fill(); bufferCtx.restore();
+        px = X; py = Y; penDown = true;
+      } else if (a === 'move') {
+        let [x,y] = args;
+        let [X,Y] = mapFn ? mapFn(x,y) : [x,y];
+        bufferCtx.save(); bufferCtx.globalAlpha = 0.12; bufferCtx.lineWidth = 12; bufferCtx.beginPath(); bufferCtx.moveTo(px,py); bufferCtx.lineTo(X,Y); bufferCtx.stroke(); bufferCtx.restore();
+        px = X; py = Y;
+      } else if (a === 'up') {
+        penDown = false;
+      }
+    } else if (t === 'eraser') {
+      // erase by drawing white over buffer
+      if (a === 'fill' || a === 'clear') {
+        const [x1,y1,x2,y2] = args;
+        let [X1,Y1] = mapFn ? mapFn(x1,y1) : [x1,y1];
+        let [X2,Y2] = mapFn ? mapFn(x2,y2) : [x2,y2];
+        bufferCtx.save(); bufferCtx.globalCompositeOperation = 'destination-out'; bufferCtx.beginPath(); bufferCtx.rect(Math.min(X1,X2), Math.min(Y1,Y2), Math.abs(X2-X1), Math.abs(Y2-Y1)); bufferCtx.fill(); bufferCtx.restore();
+      } else if (a === 'down' || a === 'move') {
+        let [x,y] = args;
+        let [X,Y] = mapFn ? mapFn(x,y) : [x,y];
+        bufferCtx.save(); bufferCtx.globalCompositeOperation = 'destination-out'; bufferCtx.beginPath(); bufferCtx.arc(X,Y,20,0,Math.PI*2); bufferCtx.fill(); bufferCtx.restore();
+      }
+    } else {
+      // ignore other tools
+    }
+  }
+}
+
+// present buffer -> visible canvas using viewRect as source rect
+function presentView() {
+  // clamp viewRect inside buffer
+  viewRect.x = Math.max(0, Math.min(viewRect.x, DEVICE_W - 1));
+  viewRect.y = Math.max(0, Math.min(viewRect.y, DEVICE_H - 1));
+  viewRect.w = Math.max(1, Math.min(viewRect.w, DEVICE_W - viewRect.x));
+  viewRect.h = Math.max(1, Math.min(viewRect.h, DEVICE_H - viewRect.y));
+
+  // draw from buffer to visible canvas, scaling source rect to full logical canvas
+  visibleCtx.setTransform(1,0,0,1,0,0);
+  visibleCtx.clearRect(0,0,visibleCanvas.width, visibleCanvas.height);
+
+  visibleCtx.drawImage(bufferCanvas,
+                       viewRect.x, viewRect.y, viewRect.w, viewRect.h,
+                       0, 0, visibleCanvas.width, visibleCanvas.height);
+
+  // update view inputs & labels
+  viewXEl.value = Math.round(viewRect.x);
+  viewYEl.value = Math.round(viewRect.y);
+  viewWEl.value = Math.round(viewRect.w);
+  viewHEl.value = Math.round(viewRect.h);
+
+  viewCoordsEl.textContent = `${viewRect.x},${viewRect.y} ${viewRect.w}×${viewRect.h}`;
+}
+
+// main render pipeline
+function renderAll() {
+  // mapping: if useBounds and fileBounds exist, compute mapping; else identity
+  if (useBounds.checked && fileBounds) {
+    mapping = computeMappingFromBounds(fileBounds, DEVICE_W, DEVICE_H, Number(marginPxEl.value), Number(marginPctEl.value), true);
+    drawIntoBuffer(parsedCommands, mapping.map);
+  } else {
+    mapping = null;
+    drawIntoBuffer(parsedCommands, null);
+  }
+  presentView();
+  logStatus('Rendered; commands: ' + parsedCommands.length + (fileBounds ? ('; BOUNDS: ' + fileBounds.join(' ')) : ''));
+}
+
+// parse + render
+parseBtn.addEventListener('click', () => {
+  const text = cmdsEl.value.trim();
+  if (!text) { logStatus('No input'); return; }
+  const res = parseCommands(text);
+  parsedCommands = res.parsed;
+  fileBounds = res.bounds || null;
+  boundsEl.textContent = fileBounds ? fileBounds.join(' ') : 'none';
+  // default initial view: if bounds small, set viewRect to device center fit to bounds scaled up
+  if (fileBounds) {
+    // fit bounds into device by default; but set viewRect to whole device to avoid top-left clipping
+    viewRect = { x:0, y:0, w:DEVICE_W, h:DEVICE_H };
+  } else {
+    viewRect = { x:0, y:0, w:DEVICE_W, h:DEVICE_H };
+  }
+  renderAll();
+});
+
+// file load
+fileInput.addEventListener('change', (ev) => {
+  const f = ev.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => { cmdsEl.value = reader.result; parseBtn.click(); };
+  reader.readAsText(f);
+});
+
+clearBtn.addEventListener('click', () => {
+  cmdsEl.value = ''; parsedCommands = []; fileBounds = null; boundsEl.textContent = 'none'; viewRect = { x:0,y:0,w:DEVICE_W,h:DEVICE_H }; renderAll(); });
+
+// view controls: inputs update viewRect
+[viewXEl, viewYEl, viewWEl, viewHEl].forEach(el => {
+  el.addEventListener('change', () => {
+    const x = Number(viewXEl.value) || 0;
+    const y = Number(viewYEl.value) || 0;
+    const w = Number(viewWEl.value) || DEVICE_W;
+    const h = Number(viewHEl.value) || DEVICE_H;
+    viewRect = { x, y, w, h };
+    presentView();
+  });
+});
+
+// pan / zoom buttons
+const panStepFactor = 0.15; // fraction of current view
+panUp.addEventListener('click', () => { viewRect.y -= Math.max(1, Math.round(viewRect.h * panStepFactor)); presentView(); });
+panDown.addEventListener('click', () => { viewRect.y += Math.max(1, Math.round(viewRect.h * panStepFactor)); presentView(); });
+panLeft.addEventListener('click', () => { viewRect.x -= Math.max(1, Math.round(viewRect.w * panStepFactor)); presentView(); });
+panRight.addEventListener('click', () => { viewRect.x += Math.max(1, Math.round(viewRect.w * panStepFactor)); presentView(); });
+
+zoomIn.addEventListener('click', () => {
+  // zoom in -> decrease viewRect size (centered)
+  const factor = 0.8;
+  const newW = Math.max(1, Math.round(viewRect.w * factor));
+  const newH = Math.max(1, Math.round(viewRect.h * factor));
+  viewRect.x += Math.round((viewRect.w - newW)/2);
+  viewRect.y += Math.round((viewRect.h - newH)/2);
+  viewRect.w = newW; viewRect.h = newH;
+  presentView();
+});
+zoomOut.addEventListener('click', () => {
+  const factor = 1.25;
+  const newW = Math.min(DEVICE_W, Math.round(viewRect.w * factor));
+  const newH = Math.min(DEVICE_H, Math.round(viewRect.h * factor));
+  viewRect.x -= Math.round((newW - viewRect.w)/2);
+  viewRect.y -= Math.round((newH - viewRect.h)/2);
+  viewRect.w = newW; viewRect.h = newH;
+  presentView();
+});
+
+// fit to BOUNDS (set viewRect to include bounds expanded by margin, then present)
+fitBoundsBtn.addEventListener('click', () => {
+  if (!fileBounds) { logStatus('No BOUNDS present'); return; }
+  const [minx,miny,maxx,maxy] = fileBounds;
+  let margin = Number(marginPxEl.value) || 0;
+  const pct = Number(marginPctEl.value) || 0;
+  if (pct > 0) margin = Math.min(DEVICE_W, DEVICE_H) * (pct / 100);
+  // map bounds to device first if useBounds checked. We'll compute mapped bounding box in device coords.
+  if (useBounds.checked && fileBounds) {
+    const m = computeMappingFromBounds(fileBounds, DEVICE_W, DEVICE_H, Number(marginPxEl.value), Number(marginPctEl.value), true);
+    // mapped bbox in device coords:
+    const x1 = m.map(minx, miny)[0];
+    const y1 = m.map(minx, miny)[1];
+    const x2 = m.map(maxx, maxy)[0];
+    const y2 = m.map(maxx, maxy)[1];
+    const bx = Math.floor(Math.min(x1,x2) - margin);
+    const by = Math.floor(Math.min(y1,y2) - margin);
+    const bw = Math.ceil(Math.abs(x2-x1) + 2*margin);
+    const bh = Math.ceil(Math.abs(y2-y1) + 2*margin);
+    viewRect = { x: Math.max(0,bx), y: Math.max(0,by), w: Math.min(DEVICE_W, bw), h: Math.min(DEVICE_H, bh) };
+  } else {
+    // no mapping -> bounds are in device coords
+    const bx = Math.floor(minx - margin), by = Math.floor(miny - margin);
+    const bw = Math.ceil((maxx - minx) + 2*margin), bh = Math.ceil((maxy - miny) + 2*margin);
+    viewRect = { x: Math.max(0,bx), y: Math.max(0,by), w: Math.min(DEVICE_W, bw), h: Math.min(DEVICE_H, bh) };
+  }
+  presentView();
+});
+
+// center bounds (set viewRect to full device and center the content by adjusting mapping margin)
+centerBoundsBtn.addEventListener('click', () => {
+  // renderAll will map bounds to device automatically if useBounds checked - so just set viewRect to full device
+  viewRect = { x:0, y:0, w:DEVICE_W, h:DEVICE_H };
+  presentView();
+});
+
+// fit all -> show whole device
+fitAllBtn.addEventListener('click', () => {
+  viewRect = { x:0, y:0, w:DEVICE_W, h:DEVICE_H };
+  presentView();
+});
+
+// reset view
+resetViewBtn.addEventListener('click', () => {
+  viewRect = { x:0, y:0, w:DEVICE_W, h:DEVICE_H };
+  visualScaleEl.value = 0.5; visualScale = parseFloat(visualScaleEl.value);
+  sizeVisibleCanvas(visualScale);
+  presentView();
+});
+
+// visual scale slider
+visualScaleEl.addEventListener('input', () => {
+  visualScale = parseFloat(visualScaleEl.value);
+  sizeVisibleCanvas(visualScale);
+});
+
+// show full device quickly
+showFullBtn.addEventListener('click', () => { viewRect = { x:0,y:0,w:DEVICE_W,h:DEVICE_H }; presentView(); });
+
+// export visible view as PNG (the visible canvas already contains the view scaled to logical DEVICE_WxDEVICE_H)
+exportPngBtn.addEventListener('click', () => {
+  // produce an image of the currently displayed view as logical DEVICE_W x DEVICE_H
+  const tmp = document.createElement('canvas');
+  tmp.width = viewRect.w;
+  tmp.height = viewRect.h;
+  const tctx = tmp.getContext('2d');
+  // copy source rect from buffer to tmp (1:1)
+  tctx.drawImage(bufferCanvas, viewRect.x, viewRect.y, viewRect.w, viewRect.h, 0, 0, tmp.width, tmp.height);
+  const url = tmp.toDataURL('image/png');
+  const a = document.createElement('a'); a.href = url; a.download = 'preview_view.png'; a.click();
+});
+
+// pointer readout & drag to pan support on visible canvas
+let isDragging = false;
+let lastClient = null;
+visibleCanvas.addEventListener('mousedown', (ev) => { isDragging = true; lastClient = { x: ev.clientX, y: ev.clientY }; visibleCanvas.style.cursor = 'grabbing'; });
+document.addEventListener('mouseup', (ev) => { isDragging = false; lastClient = null; visibleCanvas.style.cursor = 'default'; });
+document.addEventListener('mousemove', (ev) => {
+  // pointer coordinate in device coordinates depending on viewRect mapping
+  const rect = visibleCanvas.getBoundingClientRect();
+  const cx = ev.clientX - rect.left;
+  const cy = ev.clientY - rect.top;
+  if (cx < 0 || cy < 0 || cx > rect.width || cy > rect.height) {
+    // outside visible
+  } else {
+    // device coords used for display: map screen pixel to device logical via viewRect -> full canvas
+    const sx = (cx / rect.width) * viewRect.w + viewRect.x;
+    const sy = (cy / rect.height) * viewRect.h + viewRect.y;
+    pointerEl.textContent = Math.round(sx) + ',' + Math.round(sy);
+  }
+
+  if (isDragging && lastClient) {
+    const dx = ev.clientX - lastClient.x;
+    const dy = ev.clientY - lastClient.y;
+    // translate drag in screen pixels to change in viewRect (inverse relation)
+    const rect = visibleCanvas.getBoundingClientRect();
+    const sx = dx / rect.width * viewRect.w;
+    const sy = dy / rect.height * viewRect.h;
+    viewRect.x = Math.max(0, Math.min(DEVICE_W - viewRect.w, viewRect.x - sx));
+    viewRect.y = Math.max(0, Math.min(DEVICE_H - viewRect.h, viewRect.y - sy));
+    lastClient = { x: ev.clientX, y: ev.clientY };
+    presentView();
+  }
+});
+
+// small sample quick-load
+function loadExampleSmall() {
+  const ex = `# BOUNDS 0 0 45 24
+pen down 33 1
+pen move 33 24
+pen move 36 24
+pen move 36 1
+pen move 33 1
+pen up
+pen down 14 0
+pen move 14 24
+pen move 33 14
+pen move 33 10
+pen move 14 0
+pen move 17 4
+pen move 32 12
+pen move 17 20
+pen move 17 4
+pen move 36 11
+pen move 36 13
+pen move 37 12
+pen move 36 11
+pen move 14 0
+pen up
+pen down 36 11
+pen move 37 12
+pen`;
+  cmdsEl.value = ex;
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'f' && e.ctrlKey) { e.preventDefault(); fitAllBtn.click(); }
+});
+
+// initial
+loadExampleSmall();
+parseBtn.click();
+
+</script>
+</body>
+</html>

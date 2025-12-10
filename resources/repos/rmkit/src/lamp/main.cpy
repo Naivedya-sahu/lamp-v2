@@ -351,20 +351,10 @@ void eraser_fill_area(int x1, y1, x2, y2, int spacing=8):
   // Spacing of 8px matches physical eraser width at pressure 1700
   debug "ERASING AREA FILL", x1, y1, x2, y2
   
-  // Start eraser at first position
-  write_events(pen_fd, eraser_down(x1, y1, 1700))
-  
-  // Sweep back and forth without lifting the eraser
-  bool direction = true  // true = left-to-right, false = right-to-left
   for int y = y1; y <= y2; y += spacing:
-    if direction:
-      write_events(pen_fd, eraser_move(x1, y, x2, y, 1700))
-    else:
-      write_events(pen_fd, eraser_move(x2, y, x1, y, 1700))
-    direction = !direction
-  
-  // Lift eraser only at the end
-  write_events(pen_fd, eraser_up())
+    write_events(pen_fd, eraser_down(x1, y, 1700))
+    write_events(pen_fd, eraser_move(x1, y, x2, y, 1700))
+    write_events(pen_fd, eraser_up())
 
 
 

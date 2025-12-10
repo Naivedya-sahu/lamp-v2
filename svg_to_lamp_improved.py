@@ -422,24 +422,58 @@ class SVGToLamp:
 
             nums = [float(n) for n in re.findall(r'-?\d+\.?\d*', coords)]
 
-            if cmd == 'M':  # Move to (absolute)
+            if cmd == 'M':  # Move to (absolute); subsequent pairs are implicit L
                 if len(nums) < 2:
                     break
+                # if a pen was down for previous subpath, close it
                 if pen_down:
                     self.commands.append("pen up")
                     pen_down = False
+                # first coordinate is the move-to
                 current_x, current_y = nums[0], nums[1]
                 start_x, start_y = current_x, current_y
 
-            elif cmd == 'm':  # Move to (relative)
+                # if more coords are present, they are implicit LineTo commands
+                if len(nums) > 2:
+                    # put the pen down at the move-to start point then draw the implicit L's
+                    x1, y1 = self.transform_point(current_x, current_y, scale, offset_x, offset_y, shift_x, shift_y)
+                    self.commands.append(f"pen down {x1} {y1}")
+                    pen_down = True
+                    for i in range(2, len(nums), 2):
+                        x2 = nums[i]
+                        y2 = nums[i+1] if i+1 < len(nums) else None
+                        if y2 is None:
+                            break
+                        tx, ty = self.transform_point(x2, y2, scale, offset_x, offset_y, shift_x, shift_y)
+                        self.commands.append(f"pen move {tx} {ty}")
+                        current_x, current_y = x2, y2
+
+            elif cmd == 'm':  # Move to (relative); subsequent pairs are implicit l
                 if len(nums) < 2:
                     break
                 if pen_down:
                     self.commands.append("pen up")
                     pen_down = False
+                # apply relative move
                 current_x += nums[0]
                 current_y += nums[1]
                 start_x, start_y = current_x, current_y
+
+                # handle implicit relative line-tos following the move
+                if len(nums) > 2:
+                    x1, y1 = self.transform_point(current_x, current_y, scale, offset_x, offset_y, shift_x, shift_y)
+                    self.commands.append(f"pen down {x1} {y1}")
+                    pen_down = True
+                    for i in range(2, len(nums), 2):
+                        dx = nums[i]
+                        dy = nums[i+1] if i+1 < len(nums) else None
+                        if dy is None:
+                            break
+                        current_x += dx
+                        current_y += dy
+                        tx, ty = self.transform_point(current_x, current_y, scale, offset_x, offset_y, shift_x, shift_y)
+                        self.commands.append(f"pen move {tx} {ty}")
+
 
             elif cmd in ['L', 'l']:  # Line to
                 for i in range(0, len(nums), 2):
