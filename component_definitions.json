@@ -1,0 +1,185 @@
+{
+  "Resistor": {
+    "name": "Resistor",
+    "category": "passive",
+    "width": 120,
+    "height": 48,
+    "anchors": [
+      {
+        "name": "left",
+        "x": 0.0,
+        "y": 0.5,
+        "net": ""
+      },
+      {
+        "name": "right",
+        "x": 1.0,
+        "y": 0.5,
+        "net": ""
+      }
+    ],
+    "svg_group_ids": [
+      "g1087",
+      "g1092",
+      "g1263",
+      "g1253"
+    ],
+    "symbol": "R"
+  },
+  "Capacitor": {
+    "name": "Capacitor",
+    "category": "passive",
+    "width": 120,
+    "height": 48,
+    "anchors": [
+      {
+        "name": "left",
+        "x": 0.0,
+        "y": 0.5,
+        "net": ""
+      },
+      {
+        "name": "right",
+        "x": 1.0,
+        "y": 0.5,
+        "net": ""
+      }
+    ],
+    "svg_group_ids": [
+      "g1058",
+      "g1100",
+      "g1136",
+      "g1162"
+    ],
+    "symbol": "C"
+  },
+  "Inductor": {
+    "name": "Inductor",
+    "category": "passive",
+    "width": 120,
+    "height": 48,
+    "anchors": [
+      {
+        "name": "left",
+        "x": 0.0,
+        "y": 0.5,
+        "net": ""
+      },
+      {
+        "name": "right",
+        "x": 1.0,
+        "y": 0.5,
+        "net": ""
+      }
+    ],
+    "svg_group_ids": [
+      "g1046",
+      "g1063",
+      "g1081",
+      "g1091"
+    ],
+    "symbol": "L"
+  },
+  "VDC": {
+    "name": "VDC",
+    "category": "source",
+    "width": 80,
+    "height": 80,
+    "anchors": [
+      {
+        "name": "positive",
+        "x": 0.5,
+        "y": 0.0,
+        "net": ""
+      },
+      {
+        "name": "negative",
+        "x": 0.5,
+        "y": 1.0,
+        "net": ""
+      }
+    ],
+    "svg_group_ids": [
+      "g184",
+      "g188"
+    ],
+    "symbol": "V"
+  },
+  "VAC": {
+    "name": "VAC",
+    "category": "source",
+    "width": 80,
+    "height": 80,
+    "anchors": [
+      {
+        "name": "positive",
+        "x": 0.5,
+        "y": 0.0,
+        "net": ""
+      },
+      {
+        "name": "negative",
+        "x": 0.5,
+        "y": 1.0,
+        "net": ""
+      }
+    ],
+    "svg_group_ids": [
+      "g1032"
+    ],
+    "symbol": "V~"
+  },
+  "Ground": {
+    "name": "Ground",
+    "category": "connector",
+    "width": 60,
+    "height": 40,
+    "anchors": [
+      {
+        "name": "gnd",
+        "x": 0.5,
+        "y": 0.0,
+        "net": ""
+      }
+    ],
+    "svg_group_ids": [
+      "g1080",
+      "g1080-3"
+    ],
+    "symbol": "GND"
+  },
+  "Diode": {
+    "name": "Diode",
+    "category": "semiconductor",
+    "width": 80,
+    "height": 60,
+    "anchors": [
+      {
+        "name": "anode",
+        "x": 0.0,
+        "y": 0.5,
+        "net": ""
+      },
+      {
+        "name": "cathode",
+        "x": 1.0,
+        "y": 0.5,
+        "net": ""
+      }
+    ],
+    "svg_group_ids": [
+      "g2999",
+      "g3007"
+    ],
+    "symbol": "D"
+  },
+  "Wire": {
+    "name": "Wire",
+    "category": "connector",
+    "width": 0,
+    "height": 0,
+    "anchors": [],
+    "svg_group_ids": [],
+    "symbol": "-"
+  }
+}
