@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="http://www.inkscape.org/namespaces/inkscape" xmlns:ns2="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="96.807007" height="135.52985" viewBox="0 0 96.807007 135.52985" version="1.1" id="svg1" ns1:version="1.4.2 (f4327f4, 2025-05-13)" ns2:docname="N_MOSFET.svg">
+  <ns2:namedview id="namedview1" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25" ns1:showpageshadow="2" ns1:pageopacity="0.0" ns1:pagecheckerboard="0" ns1:deskcolor="#d1d1d1" ns1:document-units="px" ns1:zoom="32.534531" ns1:cx="83.803267" ns1:cy="132.09042" ns1:window-width="1920" ns1:window-height="1009" ns1:window-x="-8" ns1:window-y="-8" ns1:window-maximized="1" ns1:current-layer="N_MOSFET">
+    <ns1:page x="0" y="0" width="96.807007" height="135.52985" id="page2" margin="0" bleed="0" />
+  </ns2:namedview>
+  <ns0:defs id="defs1" />
+  <ns0:g ns1:label="Layer 1" ns1:groupmode="layer" id="layer1" transform="translate(-760.33606,-453.14095)">
+    <ns0:g id="N_MOSFET" ns1:export-filename="N_MOSFET.svg" ns1:export-xdpi="96" ns1:export-ydpi="96">
+      <ns0:path ns2:nodetypes="cccccc" ns1:connector-curvature="0" id="path3550" d="m 1456,675.41665 v 21 h -21 m 0,28 h 21 v 21" style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <ns0:path ns2:nodetypes="cc" style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" d="m 1428,722.66665 v -24.5" id="path3556" ns1:connector-curvature="0" />
+      <ns0:path style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" d="m 1449,724.41665 -7,-7 v 14 z" id="path3568" ns1:connector-curvature="0" />
+      <ns0:path ns1:connector-curvature="0" id="path3594" d="m 1428,710.41665 h -21" style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <ns0:path ns2:nodetypes="cc" ns1:connector-curvature="0" id="path3664" d="m 1433.25,692.91665 v 35" style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <ns0:circle style="fill:#000000;stroke-linecap:round" id="pin1" cx="1406.98544987708" cy="710.4356985096799" r="0.542316" />
+      <ns0:circle style="fill:#000000;stroke-linecap:round" id="pin2" cx="1455.95654671496" cy="675.40206321704" r="0.542316" />
+      <ns0:circle style="fill:#000000;stroke-linecap:round" id="pin3" cx="1455.95654671496" cy="745.632017756" r="0.542316" />
+    </ns0:g>
+  </ns0:g>
+</ns0:svg>

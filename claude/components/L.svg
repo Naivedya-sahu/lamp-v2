@@ -3,12 +3,12 @@
 
 <svg
    width="140"
-   height="32.768864"
-   viewBox="0 0 140 32.768865"
+   height="21.903503"
+   viewBox="0 0 140 21.903505"
    version="1.1"
    id="svg1"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
-   sodipodi:docname="R.svg"
+   sodipodi:docname="L.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="23.005388"
-     inkscape:cx="131.3388"
-     inkscape:cy="19.495433"
+     inkscape:zoom="16.267266"
+     inkscape:cx="123.2844"
+     inkscape:cy="20.80866"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="-8"
@@ -36,7 +36,7 @@
        x="0"
        y="0"
        width="140"
-       height="32.768864"
+       height="21.903505"
        id="page2"
        margin="0"
        bleed="0" />
@@ -47,27 +47,27 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-172.59091,-613.48258)">
+     transform="translate(-370.64197,-617.37349)">
     <path
-       id="R"
-       style="fill:none;stroke:#000000;stroke-width:7.36842;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 176.27512,629.86698 h 22.10526 l 7.36842,14.7368 14.73684,-29.47362 14.73684,29.47362 14.73685,-29.47362 14.73684,29.47362 14.73684,-29.47362 7.36842,14.73682 h 22.10526"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccc"
-       inkscape:export-filename="svg_symbols\Digital\R.svg"
+       id="L"
+       style="fill:none;stroke:#000000;stroke-width:4.88616;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 508.19888,636.83389 H 488.8969 c -0.058,-22.6095 -19.33099,-22.6095 -19.30198,0 -0.0292,-22.6095 -19.35962,-22.52914 -19.30197,0 -3.6e-4,-22.6898 -19.36039,-22.6898 -19.30197,0 3.8e-4,-22.52914 -19.27297,-22.6095 -19.302,0 -0.058,-22.6095 -19.18254,-22.6095 -19.18254,0 h -19.4214"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="svg_symbols\Digital\L.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <circle
        style="fill:#000000;stroke-linecap:round"
        id="pin1"
-       cx="176.09091"
-       cy="629.9826"
+       cx="373.64203"
+       cy="637.07355"
        r="1" />
     <circle
        style="fill:#000000;stroke-linecap:round"
        id="pin2"
-       cx="308.59091"
-       cy="629.78253"
+       cx="507.44211"
+       cy="636.87347"
        r="1" />
   </g>
 </svg>

@@ -23,14 +23,14 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="0.50835205"
-     inkscape:cx="482.93304"
-     inkscape:cy="511.45658"
-     inkscape:window-width="958"
-     inkscape:window-height="1000"
-     inkscape:window-x="953"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0"
+     inkscape:zoom="1.0167041"
+     inkscape:cx="459.81914"
+     inkscape:cy="285.72718"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
      id="defs1" />
@@ -40,8 +40,8 @@
      id="layer1">
     <g
        id="NP_CAP"
-       transform="matrix(1.8439434,0,0,1.8439434,-250.47988,-1189.2676)"
-       inkscape:export-filename="C.svg"
+       transform="matrix(0,-2.5974026,2.5974026,0,-2134.6575,1565.7772)"
+       inkscape:export-filename="..\components\C.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <path
@@ -71,8 +71,8 @@
     </g>
     <g
        id="P_CAP"
-       transform="matrix(1.8439434,0,0,1.8439434,-250.47988,-1189.2676)"
-       inkscape:export-filename="svg_symbols\Digital\P_CAP.svg"
+       transform="matrix(0,-2.5974026,2.5974026,0,-1958.5892,1691.061)"
+       inkscape:export-filename="..\components\P_CAP.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <path
@@ -113,34 +113,11 @@
          inkscape:connector-curvature="0" />
     </g>
     <g
-       id="GND"
-       inkscape:export-filename="GND.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96"
-       transform="matrix(6.969235,0,0,6.969235,118.14706,52.011039)">
-      <path
-         d="m 11.595675,64.619312 v 0.926041 h 0.46302 5.55625 a 0.46302083,0.46302083 0 0 1 -0.46302,-0.463021 v -0.46302 h -5.09323 z m 6.01927,0.926041 h 5.55625 0.463021 v -0.926041 h -0.463021 -5.093229 v 0.46302 a 0.46302083,0.46302083 0 0 1 -0.463021,0.463021 z"
-         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
-         id="path31" />
-      <path
-         d="m 17.614945,60.915145 a 0.46302083,0.46302083 0 0 0 -0.46302,0.463021 v 3.704166 a 0.46302083,0.46302083 0 0 0 0.46302,0.463021 0.46302083,0.46302083 0 0 0 0.463021,-0.463021 v -3.704166 a 0.46302083,0.46302083 0 0 0 -0.463021,-0.463021 z"
-         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
-         id="path30" />
-      <path
-         d="m 13.447758,66.471395 v 0.926042 h 0.463021 7.408333 0.463021 v -0.926042 h -0.463021 -7.408333 z"
-         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
-         id="path29" />
-      <path
-         d="m 15.299841,68.323478 v 0.926042 h 0.463021 3.704167 0.463021 v -0.926042 h -0.463021 -3.704167 z"
-         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
-         id="path28" />
-    </g>
-    <g
        id="VDC"
-       inkscape:export-filename="VDC.svg"
+       inkscape:export-filename="..\components\VDC.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
-       transform="matrix(6.969235,0,0,6.969235,118.14706,52.011039)">
+       transform="matrix(6.3521473,0,0,6.3521473,123.41319,67.585252)">
       <path
          d="m 15.942179,28.955855 c -4.126901,0.240297 -7.408333,3.671595 -7.408333,7.857919 0,4.186321 3.281432,7.617621 7.408333,7.857918 V 44.222107 A 0.46302083,0.46302083 0 0 1 16.4052,43.759086 c -3.841274,0 -6.9453123,-3.104039 -6.9453123,-6.945312 0,-3.841277 3.1040383,-6.945313 6.9453123,-6.945313 A 0.46302083,0.46302083 0 0 1 15.942179,29.40544 Z m 0.463021,0.912606 c 3.841275,0 6.945313,3.104036 6.945313,6.945313 0,3.841273 -3.104038,6.945312 -6.945313,6.945312 a 0.46302083,0.46302083 0 0 1 0.463021,0.463021 v 0.449585 c 4.126901,-0.240297 7.408333,-3.671597 7.408333,-7.857918 0,-4.186324 -3.281432,-7.617622 -7.408333,-7.857919 V 29.40544 A 0.46302083,0.46302083 0 0 1 16.4052,29.868461 Z"
          style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;stroke-linejoin:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
@@ -168,10 +145,10 @@
     </g>
     <g
        id="VAC"
-       inkscape:export-filename="VAC.svg"
+       inkscape:export-filename="..\components\VAC.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
-       transform="matrix(6.969235,0,0,6.969235,118.14706,52.011039)">
+       transform="matrix(6.3521469,0,0,6.3521469,68.650375,67.585265)">
       <path
          d="m 45.146082,28.955855 c -4.126901,0.240297 -7.408334,3.671595 -7.408334,7.857919 0,4.186321 3.281433,7.617621 7.408334,7.857918 v -0.449585 a 0.46302083,0.46302083 0 0 1 0.46302,-0.463021 c -3.841273,0 -6.945312,-3.104039 -6.945312,-6.945312 0,-3.841277 3.104039,-6.945313 6.945312,-6.945313 a 0.46302083,0.46302083 0 0 1 -0.46302,-0.463021 z m 0.46302,0.912606 c 3.841274,0 6.945313,3.104036 6.945313,6.945313 0,3.841273 -3.104039,6.945312 -6.945313,6.945312 a 0.46302083,0.46302083 0 0 1 0.463021,0.463021 v 0.449585 c 4.126901,-0.240297 7.408334,-3.671597 7.408334,-7.857918 0,-4.186324 -3.281433,-7.617622 -7.408334,-7.857919 v 0.449585 a 0.46302083,0.46302083 0 0 1 -0.463021,0.463021 z"
          style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;stroke-linejoin:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
@@ -194,7 +171,7 @@
        inkscape:export-filename="IDC.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
-       transform="matrix(6.969235,0,0,6.969235,118.14706,52.011039)">
+       transform="matrix(6.3521473,0,0,6.3521473,-25.695885,72.503107)">
       <path
          d="m 80.335665,28.955855 c -4.126901,0.240297 -7.408333,3.671595 -7.408333,7.857919 0,4.186321 3.281432,7.617621 7.408333,7.857918 v -0.449585 a 0.46302083,0.46302083 0 0 1 0.463021,-0.463021 c -3.841274,0 -6.945313,-3.104039 -6.945313,-6.945312 0,-3.841277 3.104039,-6.945313 6.945313,-6.945313 A 0.46302083,0.46302083 0 0 1 80.335665,29.40544 Z m 0.463021,0.912606 c 3.841273,0 6.945312,3.104036 6.945312,6.945313 0,3.841273 -3.104039,6.945312 -6.945312,6.945312 a 0.46302083,0.46302083 0 0 1 0.463021,0.463021 v 0.449585 c 4.1269,-0.240297 7.408333,-3.671597 7.408333,-7.857918 0,-4.186324 -3.281433,-7.617622 -7.408333,-7.857919 v 0.449585 a 0.46302083,0.46302083 0 0 1 -0.463021,0.463021 z"
          style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;stroke-linejoin:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
@@ -221,32 +198,24 @@
        inkscape:export-filename="IDCS.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
-       transform="matrix(6.969235,0,0,6.969235,118.14706,52.011039)">
+       transform="matrix(7.5926685,0,0,7.5926685,46.067079,36.276666)">
       <path
-         d="m 121.0815,44.376619 v 3.549655 a 0.46302083,0.46302083 0 0 0 0.46302,0.46302 0.46302083,0.46302083 0 0 0 0.46302,-0.46302 v -3.549655 l -0.0925,0.123507 H 121.174 Z"
+         d="m 77.425807,43.858451 v 3.549655 a 0.46302083,0.46302083 0 0 0 0.46302,0.46302 0.46302083,0.46302083 0 0 0 0.46302,-0.46302 v -3.549655 l -0.0925,0.123507 h -0.74104 z"
          style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
          id="path27" />
       <path
-         d="m 121.54452,25.238253 a 0.46302083,0.46302083 0 0 0 -0.46302,0.463021 v 3.55017 l 0.0925,-0.123506 h 0.74104 l 0.0925,0.123506 v -3.55017 a 0.46302083,0.46302083 0 0 0 -0.46302,-0.463021 z"
+         d="m 77.888827,24.720085 a 0.46302083,0.46302083 0 0 0 -0.46302,0.463021 v 3.55017 l 0.0925,-0.123506 h 0.74104 l 0.0925,0.123506 v -3.55017 a 0.46302083,0.46302083 0 0 0 -0.46302,-0.463021 z"
          style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
          id="path26" />
       <path
-         d="m 121.0815,34.96169 v 6.945313 h 0.92604 V 34.96169 Z"
-         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
-         id="path24" />
-      <path
-         d="m 121.54452,32.183565 -1.38906,2.778125 h 2.77812 z"
-         style="opacity:1;stroke-width:3.5"
-         id="path23" />
-      <path
-         d="m 121.174,29.127938 -5.55625,7.408333 v 0.555522 l 5.55625,7.408333 h 0.74104 l 5.55625,-7.408333 v -0.555522 l -5.55625,-7.408333 z m 0.37052,1.049548 4.97747,6.636288 -4.97747,6.636804 -4.97747,-6.636804 z"
+         d="m 77.518307,28.60977 -5.55625,7.408333 v 0.555522 l 5.55625,7.408333 h 0.74104 l 5.55625,-7.408333 v -0.555522 l -5.55625,-7.408333 z m 0.37052,1.049548 4.97747,6.636288 -4.97747,6.636804 -4.97747,-6.636804 z"
          style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:round;stroke-linejoin:bevel;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
          id="path22" />
     </g>
     <g
        id="D"
-       transform="matrix(1.8439434,0,0,1.8439434,-561.1638,192.87311)"
-       inkscape:export-filename="D.svg"
+       transform="matrix(2.1052632,0,0,2.1052632,-779.75778,128.69687)"
+       inkscape:export-filename="..\components\D.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <path
@@ -276,8 +245,8 @@
     </g>
     <g
        id="ZD"
-       transform="matrix(1.8439434,0,0,1.8439434,-716.05508,192.87311)"
-       inkscape:export-filename="ZD.svg"
+       transform="matrix(2.1052632,0,0,2.1052632,-958.87937,128.99202)"
+       inkscape:export-filename="..\components\ZD.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <path
@@ -307,8 +276,8 @@
     </g>
     <g
        id="NPN_BJT"
-       transform="matrix(1.8439434,0,0,1.8439434,-1326.2449,-794.19201)"
-       inkscape:export-filename="NPN_BJT.svg"
+       transform="matrix(1.8439434,0,0,1.8439434,-1361.6534,-804.02771)"
+       inkscape:export-filename="..\components\NPN_BJT.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <circle
@@ -349,7 +318,7 @@
     <g
        id="PNP_BJT"
        transform="matrix(1.8439434,0,0,1.8439434,-1326.2449,-807.09966)"
-       inkscape:export-filename="PNP_BJT.svg"
+       inkscape:export-filename="..\components\PNP_BJT.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <circle
@@ -390,7 +359,7 @@
     <g
        id="N_MOSFET"
        transform="matrix(1.8439434,0,0,1.8439434,-1830.8654,-789.06224)"
-       inkscape:export-filename="N_MOSFET.svg"
+       inkscape:export-filename="..\components\N_MOSFET.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <path
@@ -425,7 +394,7 @@
     <g
        id="P_MOSFET"
        transform="matrix(1.8439434,0,0,1.8439434,-1830.8654,-801.96988)"
-       inkscape:export-filename="P_MOSFET.svg"
+       inkscape:export-filename="..\components\P_MOSFET.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <path
@@ -458,7 +427,7 @@
     </g>
     <g
        id="AND"
-       transform="matrix(1.8439434,0,0,1.8439434,100.32719,-114.01181)"
+       transform="matrix(2.0124129,0,0,2.0124129,92.370654,-135.51609)"
        inkscape:export-filename="AND.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
@@ -489,7 +458,7 @@
     </g>
     <g
        id="NAND"
-       transform="matrix(1.8439434,0,0,1.8439434,151.95766,79.602265)"
+       transform="matrix(1.8033368,0,0,1.8033368,155.58092,80.521801)"
        inkscape:export-filename="NAND.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
@@ -526,7 +495,7 @@
     </g>
     <g
        id="OR"
-       transform="matrix(1.8439434,0,0,1.8439434,126.14242,79.602265)"
+       transform="matrix(2.0153398,0,0,2.0153398,95.251938,75.721177)"
        inkscape:export-filename="OR.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
@@ -557,7 +526,7 @@
     </g>
     <g
        id="NOR"
-       transform="matrix(1.8439434,0,0,1.8439434,151.95766,79.602265)"
+       transform="matrix(2.0153398,0,0,2.0153398,111.46898,75.721177)"
        inkscape:export-filename="NOR.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
@@ -594,7 +563,7 @@
     </g>
     <g
        id="EXOR"
-       transform="matrix(1.8439434,0,0,1.8439434,151.95766,79.602265)"
+       transform="matrix(1.8033368,0,0,1.8033368,164.39255,80.521758)"
        inkscape:export-filename="EXOR.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
@@ -633,7 +602,7 @@
     </g>
     <g
        id="EXNOR"
-       transform="matrix(1.8439434,0,0,1.8439434,126.14242,234.4935)"
+       transform="matrix(1.8033368,0,0,1.8033368,142.27251,232.00204)"
        inkscape:export-filename="EXNOR.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
@@ -676,7 +645,7 @@
     </g>
     <g
        id="INV"
-       transform="matrix(1.8439434,0,0,1.8439434,126.14242,234.4935)"
+       transform="matrix(2.0124129,0,0,2.0124129,46.249408,244.82628)"
        inkscape:export-filename="INV.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
@@ -707,7 +676,7 @@
     <g
        id="SW_OP"
        transform="matrix(1.8439434,0,0,1.8439434,-674.51777,513.15114)"
-       inkscape:export-filename="SW_OP.svg"
+       inkscape:export-filename="..\components\SW_OP.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <g
@@ -752,7 +721,7 @@
     <g
        id="SW_CL"
        transform="matrix(1.8439434,0,0,1.8439434,-674.51777,513.15114)"
-       inkscape:export-filename="SW_CL.svg"
+       inkscape:export-filename="..\components\SW_CL.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <g
@@ -796,8 +765,8 @@
     </g>
     <g
        id="OPAMP"
-       transform="matrix(1.8439434,0,0,1.8439434,-1525.644,636.27916)"
-       inkscape:export-filename="OPAMP.svg"
+       transform="matrix(2.0408163,0,0,2.0408163,-1813.6691,658.00081)"
+       inkscape:export-filename="..\components\OPAMP.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <path
@@ -852,21 +821,47 @@
     </g>
     <path
        id="R"
-       style="fill:none;stroke:#000000;stroke-width:6.4538;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 295.10671,634.54846 h -19.3614 l -6.45381,-12.90758 -12.9076,25.81516 -12.90761,-25.81516 -12.9076,25.81516 -12.90761,-25.81516 -12.9076,25.81516 -6.45381,-12.90758 h -19.3614"
+       style="fill:none;stroke:#000000;stroke-width:7.36842;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 176.27512,629.86698 h 22.10526 l 7.36842,14.7368 14.73684,-29.47362 14.73684,29.47362 14.73685,-29.47362 14.73684,29.47362 14.73684,-29.47362 7.36842,14.73682 h 22.10526"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccccc"
-       inkscape:export-filename="svg_symbols\Digital\R.svg"
+       inkscape:export-filename="..\components\R.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <path
        inkscape:connector-curvature="0"
        id="L"
-       style="fill:none;stroke:#000000;stroke-width:6.53494;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 518.22378,634.54846 h -25.81521 c -0.0776,-30.23882 -25.854,-30.23882 -25.81521,0 -0.039,-30.23882 -25.89231,-30.13134 -25.81519,0 -4.9e-4,-30.34621 -25.89333,-30.34621 -25.81521,0 5.1e-4,-30.13134 -25.77642,-30.23882 -25.81523,0 -0.0776,-30.23882 -25.65547,-30.23882 -25.65547,0 h -25.97493"
+       style="fill:none;stroke:#000000;stroke-width:4.88616;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 508.19888,636.83389 H 488.8969 c -0.058,-22.6095 -19.33099,-22.6095 -19.30198,0 -0.0292,-22.6095 -19.35962,-22.52914 -19.30197,0 -3.6e-4,-22.6898 -19.36039,-22.6898 -19.30197,0 3.8e-4,-22.52914 -19.27297,-22.6095 -19.302,0 -0.058,-22.6095 -19.18254,-22.6095 -19.18254,0 h -19.4214"
        sodipodi:nodetypes="cccccccc"
-       inkscape:export-filename="svg_symbols\Digital\L.svg"
+       inkscape:export-filename="..\components\L.svg"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
+    <g
+       id="GND"
+       inkscape:export-filename="..\components\GND.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <path
+         d="m 189.92578,514.19727 v 7.6914 h 3.8457 46.1543 a 3.846154,3.846154 0 0 1 -0.50195,-0.0332 3.846154,3.846154 0 0 1 -3.34375,-3.8125 v -3.8457 h -42.3086 z m 50,7.6914 h 46.1543 3.8457 v -7.6914 h -3.8457 -42.3086 v 3.8457 a 3.846154,3.846154 0 0 1 -3.8457,3.8457 z"
+         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+         id="path4" />
+      <path
+         d="m 239.92578,483.42773 a 3.846154,3.846154 0 0 0 -3.8457,3.84571 v 30.76953 a 3.846154,3.846154 0 0 0 3.8457,3.8457 3.846154,3.846154 0 0 0 3.8457,-3.8457 v -30.76953 a 3.846154,3.846154 0 0 0 -3.8457,-3.84571 z"
+         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+         id="path3" />
+      <path
+         d="m 205.31055,529.58203 v 7.69141 h 3.8457 61.53906 3.84571 v -7.69141 h -3.84571 -61.53906 z"
+         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+         id="path2" />
+      <path
+         d="m 220.69531,544.9668 v 7.6914 h 3.84571 30.76953 3.8457 v -7.6914 h -3.8457 -30.76953 z"
+         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+         id="path1" />
+      <path
+         d="m 230.31053,558.9668 v 7.691 h 1.92286 15.38479 1.92285 v -7.691 h -1.92285 -15.38479 z"
+         style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-width:0.707089;stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+         id="path12" />
+    </g>
   </g>
 </svg>

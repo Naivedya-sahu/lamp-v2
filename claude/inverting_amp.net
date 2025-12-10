@@ -1,0 +1,8 @@
+* Inverting Op-Amp Amplifier
+* Gain = -Rf/Rin = -10
+V1 VIN 0 1V
+R1 VIN NINV 1k
+R2 NINV VOUT 10k
+U1 GND NINV VCC VEE VOUT
+VCC VCC 0 15V
+VEE VEE 0 -15V

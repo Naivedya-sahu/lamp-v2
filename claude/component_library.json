@@ -1,0 +1,428 @@
+{
+  "C": {
+    "width": 100.0,
+    "height": 81.82,
+    "bounds": [
+      282.0,
+      410.0,
+      1122.0,
+      1460.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 201.12794900000017,
+        "y": 729.543
+      },
+      {
+        "id": "pin2",
+        "x": 292.02294900000015,
+        "y": 729.543
+      }
+    ],
+    "pen_commands": [
+      "pen down 702 410",
+      "pen move 702 830",
+      "pen up",
+      "pen down 282 830",
+      "pen move 1122 830",
+      "pen up",
+      "pen down 282 1040",
+      "pen move 1122 1040",
+      "pen up",
+      "pen down 702 1040",
+      "pen move 702 1460",
+      "pen up"
+    ]
+  },
+  "D": {
+    "width": 140.00006,
+    "height": 70.869698,
+    "bounds": [
+      215.0,
+      67.0,
+      467.0,
+      179.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 3.4999930532654844,
+        "y": 35.700219340358785
+      },
+      {
+        "id": "pin2",
+        "x": 136.00003291379176,
+        "y": 35.50014934056935
+      }
+    ],
+    "pen_commands": [
+      "pen down 215 123",
+      "pen move 299 123",
+      "pen up",
+      "pen down 411 123",
+      "pen move 467 123",
+      "pen up",
+      "pen down 411 123",
+      "pen move 299 179",
+      "pen move 299 67",
+      "pen move 411 123",
+      "pen up",
+      "pen down 411 67",
+      "pen move 411 179",
+      "pen up"
+    ]
+  },
+  "GND": {
+    "width": 100.0,
+    "height": 83.23,
+    "bounds": [
+      52.0,
+      451.0,
+      1352.0,
+      1433.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 50.0,
+        "y": 0.0
+      }
+    ],
+    "pen_commands": [
+      "pen down 702 451",
+      "pen move 702 850",
+      "pen up",
+      "pen down 52 850",
+      "pen move 1352 850",
+      "pen up",
+      "pen down 252 1051",
+      "pen move 1151 1051",
+      "pen up",
+      "pen down 451 1251",
+      "pen move 951 1251",
+      "pen up",
+      "pen down 577 1433",
+      "pen move 826 1433",
+      "pen up"
+    ]
+  },
+  "L": {
+    "width": 140.0,
+    "height": 21.903503,
+    "bounds": [
+      93.0,
+      856.0,
+      1310.0,
+      1003.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 3.000059999999962,
+        "y": 19.700060000000008
+      },
+      {
+        "id": "pin2",
+        "x": 136.80014,
+        "y": 19.49998000000005
+      }
+    ],
+    "pen_commands": [
+      "pen down 1310 1003",
+      "pen move 1136 1003",
+      "pen move 1118 905",
+      "pen move 1074 856",
+      "pen move 1023 856",
+      "pen move 980 905",
+      "pen move 962 1003",
+      "pen move 944 905",
+      "pen move 901 856",
+      "pen move 849 856",
+      "pen move 806 905",
+      "pen move 788 1003",
+      "pen move 770 905",
+      "pen move 727 856",
+      "pen move 676 856",
+      "pen move 633 905",
+      "pen move 615 1003",
+      "pen move 597 905",
+      "pen move 554 856",
+      "pen move 502 856",
+      "pen move 459 905",
+      "pen move 441 1003",
+      "pen move 423 905",
+      "pen move 380 856",
+      "pen move 329 856",
+      "pen move 286 905",
+      "pen move 268 1003",
+      "pen move 93 1003",
+      "pen up"
+    ]
+  },
+  "OPAMP": {
+    "width": 150.0,
+    "height": 149.99997,
+    "bounds": [
+      959.0,
+      247.0,
+      1099.0,
+      387.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 3.500007024299066,
+        "y": 103.3000861992245
+      },
+      {
+        "id": "pin2",
+        "x": 3.500007024299066,
+        "y": 46.50000577844014
+      },
+      {
+        "id": "pin3",
+        "x": 75.00000755398241,
+        "y": 3.5000054598891097
+      },
+      {
+        "id": "pin4",
+        "x": 75.00000755398241,
+        "y": 146.19534651699956
+      },
+      {
+        "id": "pin5",
+        "x": 146.00000807996184,
+        "y": 74.7999959880911
+      }
+    ],
+    "pen_commands": [
+      "pen down 1005 289",
+      "pen move 984 289",
+      "pen up",
+      "pen down 994 355",
+      "pen move 994 334",
+      "pen up",
+      "pen down 1005 345",
+      "pen move 984 345",
+      "pen up",
+      "pen down 959 289",
+      "pen move 973 289",
+      "pen up",
+      "pen down 959 345",
+      "pen move 973 345",
+      "pen up",
+      "pen down 973 261",
+      "pen move 973 373",
+      "pen move 1085 317",
+      "pen move 973 261",
+      "pen up",
+      "pen down 1085 317",
+      "pen move 1099 317",
+      "pen up",
+      "pen down 1029 289",
+      "pen move 1029 247",
+      "pen up",
+      "pen down 1029 345",
+      "pen move 1029 387",
+      "pen up"
+    ]
+  },
+  "P_CAP": {
+    "width": 100.0,
+    "height": 88.201477,
+    "bounds": [
+      251.0,
+      1474.0,
+      503.0,
+      1768.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 3.5001271402966267,
+        "y": 45.46405202338599
+      },
+      {
+        "id": "pin2",
+        "x": 95.49997723229626,
+        "y": 45.29993202322191
+      }
+    ],
+    "pen_commands": [
+      "pen down 363 1488",
+      "pen move 363 1600",
+      "pen up",
+      "pen down 363 1656",
+      "pen move 363 1768",
+      "pen up",
+      "pen down 475 1600",
+      "pen move 251 1600",
+      "pen up",
+      "pen down 475 1684",
+      "pen move 460 1668",
+      "pen move 442 1659",
+      "pen move 419 1656",
+      "pen move 307 1656",
+      "pen move 283 1659",
+      "pen move 265 1668",
+      "pen move 251 1684",
+      "pen up",
+      "pen down 503 1516",
+      "pen move 419 1516",
+      "pen up",
+      "pen down 461 1558",
+      "pen move 461 1474",
+      "pen up"
+    ]
+  },
+  "R": {
+    "width": 140.0,
+    "height": 32.768864,
+    "bounds": [
+      106.0,
+      803.0,
+      1300.0,
+      1068.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 3.5,
+        "y": 16.500020000000063
+      },
+      {
+        "id": "pin2",
+        "x": 136.0,
+        "y": 16.299949999999967
+      }
+    ],
+    "pen_commands": [
+      "pen down 106 935",
+      "pen move 305 935",
+      "pen move 371 1068",
+      "pen move 504 803",
+      "pen move 637 1068",
+      "pen move 769 803",
+      "pen move 902 1068",
+      "pen move 1035 803",
+      "pen move 1101 935",
+      "pen move 1300 935",
+      "pen up"
+    ]
+  },
+  "VAC": {
+    "width": 100.0,
+    "height": 147.06,
+    "bounds": [
+      701.0,
+      222.0,
+      935.0,
+      1282.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 358.35836800000004,
+        "y": 227.896776
+      },
+      {
+        "id": "pin2",
+        "x": 358.35836800000004,
+        "y": 374.95828
+      }
+    ],
+    "pen_commands": [
+      "pen circle 701 935 222",
+      "pen down 701 587",
+      "pen move 701 712",
+      "pen up",
+      "pen down 701 1157",
+      "pen move 701 1282",
+      "pen up"
+    ]
+  },
+  "VDC": {
+    "width": 100.0,
+    "height": 147.06,
+    "bounds": [
+      659.0,
+      222.0,
+      935.0,
+      1282.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 227.61756000000003,
+        "y": 227.896776
+      },
+      {
+        "id": "pin2",
+        "x": 227.61756000000003,
+        "y": 374.95828
+      }
+    ],
+    "pen_commands": [
+      "pen circle 701 935 222",
+      "pen down 701 587",
+      "pen move 701 712",
+      "pen up",
+      "pen down 701 1157",
+      "pen move 701 1282",
+      "pen up",
+      "pen down 660 795",
+      "pen move 694 795",
+      "pen up",
+      "pen down 710 795",
+      "pen move 743 795",
+      "pen up",
+      "pen down 702 754",
+      "pen move 702 837",
+      "pen up",
+      "pen down 659 1065",
+      "pen move 742 1065",
+      "pen up"
+    ]
+  },
+  "ZD": {
+    "width": 140.0,
+    "height": 91.473145,
+    "bounds": [
+      467.0,
+      57.0,
+      719.0,
+      211.0
+    ],
+    "pins": [
+      {
+        "id": "pin1",
+        "x": 3.4999953993151394,
+        "y": 45.800029860673476
+      },
+      {
+        "id": "pin2",
+        "x": 136.00001571999974,
+        "y": 45.80006105039206
+      }
+    ],
+    "pen_commands": [
+      "pen down 467 134",
+      "pen move 551 134",
+      "pen up",
+      "pen down 663 134",
+      "pen move 719 134",
+      "pen up",
+      "pen down 663 134",
+      "pen move 551 190",
+      "pen move 551 78",
+      "pen move 663 134",
+      "pen up",
+      "pen down 684 211",
+      "pen move 663 190",
+      "pen move 663 78",
+      "pen move 642 57",
+      "pen up"
+    ]
+  }
+}
