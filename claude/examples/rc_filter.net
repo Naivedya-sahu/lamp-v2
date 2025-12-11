@@ -1,5 +1,0 @@
-* Simple RC Low-Pass Filter
-* Voltage source drives R-C network
-V1 IN 0 
-R1 IN OUT 
-C1 OUT 0 
