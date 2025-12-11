@@ -75,7 +75,7 @@ echo -e "${GREEN}✓ Connected${NC}"
 echo ""
 
 # Build Python command with arguments
-PY_CMD="python3 svg_to_lamp_smart.py '$SVG_FILE'"
+PY_CMD="python3 ./Archive/v2.2/src/svg_to_lamp_smart.py '$SVG_FILE'"
 [ -n "$SCALE" ] && PY_CMD="$PY_CMD $SCALE"
 [ -n "$OFFSET_X" ] && PY_CMD="$PY_CMD $OFFSET_X"
 [ -n "$OFFSET_Y" ] && PY_CMD="$PY_CMD $OFFSET_Y"

@@ -23,15 +23,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="23.005388"
-     inkscape:cx="131.3388"
-     inkscape:cy="19.495433"
+     inkscape:zoom="4.0668165"
+     inkscape:cx="41.4329"
+     inkscape:cy="24.958097"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1">
+     inkscape:current-layer="svg1">
     <inkscape:page
        x="0"
        y="0"
@@ -43,31 +43,25 @@
   </sodipodi:namedview>
   <defs
      id="defs1" />
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(-172.59091,-613.48258)">
-    <path
-       id="R"
-       style="fill:none;stroke:#000000;stroke-width:7.36842;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 176.27512,629.86698 h 22.10526 l 7.36842,14.7368 14.73684,-29.47362 14.73684,29.47362 14.73685,-29.47362 14.73684,29.47362 14.73684,-29.47362 7.36842,14.73682 h 22.10526"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccc"
-       inkscape:export-filename="svg_symbols\Digital\R.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
-    <circle
-       style="fill:#000000;stroke-linecap:round"
-       id="pin1"
-       cx="176.09091"
-       cy="629.9826"
-       r="1" />
-    <circle
-       style="fill:#000000;stroke-linecap:round"
-       id="pin2"
-       cx="308.59091"
-       cy="629.78253"
-       r="1" />
-  </g>
+  <path
+     id="R"
+     style="fill:none;stroke:#000000;stroke-width:7.36842;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 3.68421,16.38445 H 25.78947 L 33.15789,31.12125 47.89473,1.64763 62.63157,31.12125 77.36842,1.64763 92.10526,31.12125 106.8421,1.64763 l 7.36842,14.73682 h 22.10526"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cccccccccc"
+     inkscape:export-filename="svg_symbols\Digital\R.svg"
+     inkscape:export-xdpi="96"
+     inkscape:export-ydpi="96" />
+  <circle
+     style="fill:#000000;stroke-linecap:round"
+     id="pin1"
+     cx="3.5000019"
+     cy="16.500074"
+     r="1" />
+  <circle
+     style="fill:#000000;stroke-linecap:round"
+     id="pin2"
+     cx="136"
+     cy="16.300001"
+     r="1" />
 </svg>
