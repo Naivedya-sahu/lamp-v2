@@ -222,6 +222,7 @@ def write_events(int fd, vector<input_event> events, int sleep_time=1000):
     debug "DIDN'T SEND", send.size(), "EVENTS"
 
 int finger_x, finger_y, pen_x, pen_y
+int touch_fd, pen_fd
 void act_on_line(string);
 void pen_draw_rectangle(int x1, y1, x2, y2):
   if x2 == -1:
@@ -378,7 +379,6 @@ void eraser_clear_area(int x1, y1, x2, y2):
 
 
 
-int touch_fd, pen_fd
 void act_on_line(string line):
   stringstream ss(line)
   string action, tool

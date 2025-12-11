@@ -28,7 +28,7 @@ python3 --version
 export RM_IP="10.11.99.1"
 
 # Copy lamp binary
-scp resources/repos/rmkit/src/build/lamp root@$RM_IP:/opt/bin/
+scp resources/rmkit/src/build/lamp root@$RM_IP:/opt/bin/
 
 # Test connection
 ssh root@$RM_IP "lamp --version"
