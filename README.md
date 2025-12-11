@@ -91,11 +91,25 @@ python3 svg_to_lamp_improved.py components/C.svg 700 800 1.5 | ssh root@10.11.99
 ### Eraser Commands
 
 ```bash
-# Erase rectangle area
-echo "eraser fill 100 100 500 500 15" | ssh root@10.11.99.1 lamp
-
 # Erase line
 echo "eraser line 100 100 500 500" | ssh root@10.11.99.1 lamp
+
+# Erase rectangle outline
+echo "eraser rectangle 100 100 500 500" | ssh root@10.11.99.1 lamp
+
+# Fill area with eraser (default 8px spacing)
+echo "eraser fill 100 100 500 500" | ssh root@10.11.99.1 lamp
+
+# Fill area with custom spacing
+echo "eraser fill 100 100 500 500 10" | ssh root@10.11.99.1 lamp
+
+# Dense clear (5px spacing for complete coverage)
+echo "eraser clear 100 100 500 500" | ssh root@10.11.99.1 lamp
+
+# Low-level eraser control
+echo "eraser down 100 100" | ssh root@10.11.99.1 lamp
+echo "eraser move 500 500" | ssh root@10.11.99.1 lamp
+echo "eraser up" | ssh root@10.11.99.1 lamp
 ```
 
 ## Component Library
