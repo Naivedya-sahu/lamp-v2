@@ -58,10 +58,19 @@ You should see a complete RC circuit with voltage source and ground!
 ## 5. Try Eraser Commands
 
 ```bash
-# Erase the circuit
-echo "eraser fill 0 0 1404 1872 20" | ssh root@$RM_IP lamp
+# Test eraser line
+echo "eraser line 100 100 500 500" | ssh root@$RM_IP lamp
 
-# Draw again
+# Test eraser rectangle
+echo "eraser rectangle 600 100 1000 500" | ssh root@$RM_IP lamp
+
+# Test fill area
+echo "eraser fill 100 600 500 1000 8" | ssh root@$RM_IP lamp
+
+# Clear everything with dense erasure
+echo "eraser clear 0 0 1404 1872" | ssh root@$RM_IP lamp
+
+# Draw circuit again
 cat rc_vdc_circuit.lamp | ssh root@$RM_IP lamp
 ```
 
