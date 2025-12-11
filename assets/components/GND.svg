@@ -1,27 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="100" height="83.23" viewBox="0 0 100 83.23" version="1.1">
-  <g id="GND" transform="translate(-189.926,-483.428)">
-    <!-- Vertical line from pin to first horizontal -->
-    <path d="M 239.926,483.428 V 514.197" 
-          style="stroke:#000000;stroke-width:7.692;stroke-linecap:round"/>
-    
-    <!-- First horizontal line (longest) -->
-    <path d="M 189.926,514.197 H 289.926" 
-          style="stroke:#000000;stroke-width:7.692;stroke-linecap:square"/>
-    
-    <!-- Second horizontal (shorter) -->
-    <path d="M 205.311,529.582 H 274.541" 
-          style="stroke:#000000;stroke-width:7.692;stroke-linecap:square"/>
-    
-    <!-- Third horizontal (shorter still) -->
-    <path d="M 220.695,544.967 H 259.156" 
-          style="stroke:#000000;stroke-width:7.692;stroke-linecap:square"/>
-    
-    <!-- Fourth horizontal (shortest) -->
-    <path d="M 230.311,558.967 H 249.541" 
-          style="stroke:#000000;stroke-width:7.692;stroke-linecap:square"/>
-    
-    <!-- Pin at top of vertical wire -->
-    <circle id="pin1" cx="239.926" cy="483.428" r="1"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100.0 76.5" width="100.0" height="76.5">
+  <g id="GND">
+  <path d="M 50.00,1.00 L 50.00,31.77" style="stroke:#000000;stroke-width:7.692;stroke-linecap:round" />
+  <path d="M 0.00,31.77 L 100.00,31.77" style="stroke:#000000;stroke-width:7.692;stroke-linecap:square" />
+  <path d="M 15.39,47.15 L 84.62,47.15" style="stroke:#000000;stroke-width:7.692;stroke-linecap:square" />
+  <path d="M 30.77,62.54 L 69.23,62.54" style="stroke:#000000;stroke-width:7.692;stroke-linecap:square" />
+  <path d="M 40.39,76.54 L 59.62,76.54" style="stroke:#000000;stroke-width:7.692;stroke-linecap:square" />
+  <circle cx="50.00" cy="1.00" r="1.00" id="pin1" />
   </g>
-</svg>
+  </svg>
