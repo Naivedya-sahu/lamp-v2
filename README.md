@@ -1,195 +1,176 @@
-# lamp-v2 🧹
+# lamp-v2
 
-Enhanced version of [rmkit's lamp](https://github.com/rmkit-dev/rmkit) with **programmatic eraser support** and **custom component library** for reMarkable tablets.
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![reMarkable](https://img.shields.io/badge/reMarkable-2-green.svg)](https://remarkable.com/)
+Circuit drawing system for reMarkable tablets with eraser support and netlist-based rendering.
 
 ## Features
 
-### Eraser Support
-- 🎨 Full eraser tool emulation via `BTN_TOOL_RUBBER` events
-- 🔄 Dynamic self-clearing UI - menus erase and redraw themselves
-- 🎭 Smooth transitions and animations
-- ✅ Native integration - xochitl recognizes all strokes
-- 📱 No rm2fb required - works on firmware 3.24+
-
-### Component Library
-- 📚 Extract individual symbols from 214-symbol electrical library
-- 🔧 Configure visibility: `viewed`, `cycled`, or `hidden`
-- 🔄 Cycle through favorite components with buttons
-- 💾 Export symbols to individual SVG files
-- 🎨 Integration with svg_to_lamp.py for drawing
+- **Circuit Builder** - Draw circuits from SPICE netlists with auto-layout
+- **Component Library** - 214 electrical symbols with anchor points
+- **Eraser Support** - Programmatic erasing via BTN_TOOL_RUBBER events
+- **SVG Rendering** - Convert SVG components to lamp drawing commands
 
 ## Quick Start
 
 ```bash
-# Build enhanced lamp
+# Draw a circuit from netlist
+python3 circuit_builder.py
+
+# Draw single component
+python3 svg_to_lamp_improved.py components/R.svg 500 800 1.0 | ssh root@10.11.99.1 lamp
+
+# Build lamp with eraser support
 ./build_lamp_enhanced.sh
-
-# Deploy to reMarkable
 scp resources/repos/rmkit/src/build/lamp root@10.11.99.1:/opt/bin/
-
-# Test eraser
-echo "pen rectangle 100 100 500 500" | lamp
-echo "eraser fill 100 100 500 500 15" | lamp
-
-# Component library demo
-./examples/component_library_demo.sh
 ```
 
-## Eraser Commands
+## Core Files
+
+```
+circuit_builder.py          # Circuit renderer with anchor points
+component_definitions.py    # Component library (214 symbols)
+svg_to_lamp_improved.py     # SVG to lamp converter
+component_library.json      # Component configuration
+component_definitions.json  # Component templates
+```
+
+## Directory Structure
+
+```
+lamp-v2/
+├── circuit_builder.py              # Main circuit builder
+├── component_definitions.py        # Component library
+├── svg_to_lamp_improved.py         # SVG converter
+├── build_lamp_enhanced.sh          # Build script
+│
+├── components/                     # Individual component SVGs
+│   ├── R.svg, C.svg, L.svg        # Passive components
+│   ├── VDC.svg, VAC.svg           # Sources
+│   └── GND.svg, OPAMP.svg         # Other components
+│
+├── examples/                       # Examples and library
+│   └── Electrical_symbols_library.svg  # 214 symbols
+│
+├── claude/                         # Development experiments (v2)
+│   ├── netlist_parser.py          # SPICE netlist parser
+│   ├── circuit_placer.py          # Layout optimizer
+│   └── *.net                      # Example netlists
+│
+├── old/                            # Legacy code (v1)
+└── resources/                      # rmkit source and docs
+```
+
+## Usage
+
+### Draw Circuit from Netlist
+
+```python
+# Example netlist: rc_filter.net
+V1 1 0 DC 5V
+R1 1 2 10k
+C1 2 0 100nF
+.end
+```
 
 ```bash
+# Generate and draw
+python3 circuit_builder.py  # Creates rc_vdc_circuit.lamp
+ssh root@10.11.99.1 "cat > /tmp/circuit.lamp" < rc_vdc_circuit.lamp
+ssh root@10.11.99.1 "lamp < /tmp/circuit.lamp"
+```
+
+### Draw Individual Components
+
+```bash
+# Resistor at (500, 800), scale 1.5
+python3 svg_to_lamp_improved.py components/R.svg 500 800 1.5 | ssh root@10.11.99.1 lamp
+
+# Capacitor
+python3 svg_to_lamp_improved.py components/C.svg 700 800 1.5 | ssh root@10.11.99.1 lamp
+```
+
+### Eraser Commands
+
+```bash
+# Erase rectangle area
+echo "eraser fill 100 100 500 500 15" | ssh root@10.11.99.1 lamp
+
 # Erase line
-echo "eraser line x1 y1 x2 y2" | lamp
-
-# Erase rectangle
-echo "eraser rectangle x1 y1 x2 y2" | lamp
-
-# Fill area with eraser strokes
-echo "eraser fill x1 y1 x2 y2 [spacing]" | lamp
-
-# Dense clearing
-echo "eraser clear x1 y1 x2 y2" | lamp
-
-# Low-level control
-echo "eraser down x y" | lamp
-echo "eraser move x y" | lamp
-echo "eraser up" | lamp
+echo "eraser line 100 100 500 500" | ssh root@10.11.99.1 lamp
 ```
 
 ## Component Library
 
-```bash
-# Initialize configuration
-python3 component_library.py init
+**Available Components:**
+- **Passive:** R (Resistor), C (Capacitor), L (Inductor)
+- **Sources:** VDC, VAC
+- **Semiconductors:** D (Diode), ZD (Zener), OPAMP
+- **Other:** GND (Ground), P_CAP (Polarized Capacitor)
 
-# List symbols
-python3 component_library.py list
-
-# Configure visibility
-python3 component_library.py set g1087 cycled   # resistor
-python3 component_library.py set g1263 viewed   # transistor
-python3 component_library.py set g6082 hidden   # deprecated
-
-# Export symbols
-python3 component_library.py export --visibility cycled --output symbols/
-
-# Draw on tablet
-python3 svg_to_lamp.py symbols/g1087.svg 500 800 2.0 | lamp
+**Component Format:**
+```json
+{
+  "name": "Resistor",
+  "width": 120,
+  "height": 48,
+  "anchors": [
+    {"name": "left", "x": 0.0, "y": 0.5},
+    {"name": "right", "x": 1.0, "y": 0.5}
+  ],
+  "svg_group_ids": ["g1087"]
+}
 ```
 
-## Utilities
+## Development Versions
 
-**svg_to_lamp.py** - Convert SVG to lamp commands
-```bash
-python3 svg_to_lamp.py symbol.svg x y scale | lamp
+### v3 (Current) - Root Directory
+Production code with circuit builder and anchor point system.
+- `circuit_builder.py` - Circuit rendering with netlist support
+- `component_definitions.py` - Component library
+- `svg_to_lamp_improved.py` - SVG converter
+
+### v2 - claude/ Directory
+Experimental features developed with Claude Code.
+- Netlist parser prototypes
+- Layout optimization experiments
+- Component placement algorithms
+
+### v1 - old/ Directory
+Legacy implementation.
+- Original component library
+- Early SVG converters
+- Documentation archive
+
+## Build Requirements
+
+- **ARM Cross-compiler:** `gcc-arm-linux-gnueabihf`, `g++-arm-linux-gnueabihf`
+- **okp Transpiler:** For .cpy file compilation
+- **Python 3.9+:** Standard library only
+- **reMarkable Tablet:** Firmware 3.15+
+
+## Configuration
+
+**component_library.json** - Component visibility settings
+```json
+{
+  "symbols": {
+    "g1087": {
+      "visibility": "cycled",
+      "name": "resistor",
+      "category": "passive"
+    }
+  }
+}
 ```
 
-**text_to_lamp.py** - Render text as vector strokes
-```bash
-python3 text_to_lamp.py "10kΩ" x y size | lamp
-```
-
-**component_selector.py** - Interactive component browser
-```bash
-python3 component_selector.py
-# Commands: n (next), p (previous), c (current), e (export), q (quit)
-```
-
-## Repository Structure
-
-```
-lamp-v2/
-├── README.md                           # This file
-├── DEV_HISTORY.md                      # Development history
-├── INSTALL.md                          # Install/use/uninstall guide
-├── component_library.py                # Component library manager
-├── component_selector.py               # Interactive selector
-├── component_library_config.json       # Symbol configuration
-├── svg_to_lamp.py                      # SVG to lamp converter
-├── text_to_lamp.py                     # Text renderer
-├── build_lamp_enhanced.sh              # Build script
-├── test_eraser.sh                      # Eraser tests
-├── lamp_eraser.patch                   # Eraser patch
-└── examples/
-    ├── component_library_demo.sh       # Component library demo
-    ├── dynamic_ui_demo.sh              # Dynamic UI demo
-    └── svg_symbols/
-        ├── Electrical_symbols_library.svg  # 214 symbols
-        ├── resistor.svg
-        ├── capacitor.svg
-        └── ground.svg
-```
-
-## Use Cases
-
-### Dynamic Menus
-```bash
-# Draw menu
-echo "pen rectangle 50 1400 350 1850" | lamp
-
-# User selection...
-
-# Transition to new screen
-echo "eraser fill 50 1400 350 1850 15" | lamp
-echo "pen rectangle 370 1400 670 1850" | lamp
-```
-
-### Component Palette
-```bash
-# Show component
-python3 svg_to_lamp.py resistor.svg 700 1600 1.5 | lamp
-python3 text_to_lamp.py "10kΩ" 720 1680 0.5 | lamp
-
-# Clear preview area
-echo "eraser fill 700 1400 1350 1850 15" | lamp
-```
-
-## How It Works
-
-The reMarkable tablet recognizes `BTN_TOOL_RUBBER` events for eraser input. Just like lamp emulates `BTN_TOOL_PEN` for drawing, we emulate `BTN_TOOL_RUBBER` for erasing using the same coordinate system and event injection mechanism.
-
-## Prerequisites
-
-- ARM cross-compiler: `gcc-arm-linux-gnueabihf`, `g++-arm-linux-gnueabihf`
-- [okp](https://github.com/raisjn/okp) transpiler
-- Python 3.x
-- reMarkable tablet (firmware 3.24+)
-
-## Documentation
-
-- **README.md** - This overview
-- **DEV_HISTORY.md** - Development timeline and technical notes
-- **INSTALL.md** - Complete installation, usage, and testing guide
-
-## Compatibility
-
-| Device | Firmware | Status |
-|--------|----------|--------|
-| reMarkable 2 | 3.24 | ✅ Tested |
-| reMarkable 2 | 3.15-3.23 | ✅ Should work |
-| reMarkable 1 | Any | ⚠️ Untested |
+**component_definitions.json** - Component templates with dimensions and anchor points
 
 ## License
 
-MIT License - see LICENSE file.
+MIT License - Based on [rmkit](https://github.com/rmkit-dev/rmkit)
 
-Electrical symbols library: CC0 Public Domain (Wikimedia Commons)
+Electrical symbols: CC0 Public Domain (Wikimedia Commons)
 
-## Credits
+## Links
 
-- Based on [rmkit](https://github.com/rmkit-dev/rmkit) by rmkit-dev
-- Electrical symbols: Filip Dominec and contributors (Wikimedia Commons)
-- Eraser support inspired by reMarkable input event analysis
-
-## Related Projects
-
-- [rmkit](https://github.com/rmkit-dev/rmkit) - Original reMarkable toolkit
-- [remarkable-hacks](https://github.com/ddvk/remarkable-hacks) - Patches for xochitl
-- [awesome-reMarkable](https://github.com/reHackable/awesome-reMarkable) - Community tools
-
----
-
-**Made with ❤️ for the reMarkable community**
+- [rmkit](https://github.com/rmkit-dev/rmkit) - Original lamp tool
+- [reMarkable 2](https://remarkable.com/) - Target device
