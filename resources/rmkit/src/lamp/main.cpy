@@ -347,14 +347,34 @@ void pen_draw_bezier(vector<int> coors):
   trace_bezier(coors)
   act_on_line("pen up")
 
+void eraser_draw_line(int x1, y1, x2, y2):
+  debug "ERASING LINE", x1, y1, x2, y2
+  write_events(pen_fd, eraser_down(x1, y1, 1700))
+  write_events(pen_fd, eraser_move(x1, y1, x2, y2, 1700))
+  write_events(pen_fd, eraser_up())
+
+void eraser_draw_rectangle(int x1, y1, x2, y2):
+  debug "ERASING RECT", x1, y1, x2, y2
+  write_events(pen_fd, eraser_down(x1, y1, 1700))
+  write_events(pen_fd, eraser_move(x1, y1, x1, y2, 1700))
+  write_events(pen_fd, eraser_move(x1, y2, x2, y2, 1700))
+  write_events(pen_fd, eraser_move(x2, y2, x2, y1, 1700))
+  write_events(pen_fd, eraser_move(x2, y1, x1, y1, 1700))
+  write_events(pen_fd, eraser_up())
+
 void eraser_fill_area(int x1, y1, x2, y2, int spacing=8):
   // Spacing of 8px matches physical eraser width at pressure 1700
   debug "ERASING AREA FILL", x1, y1, x2, y2
-  
+
   for int y = y1; y <= y2; y += spacing:
     write_events(pen_fd, eraser_down(x1, y, 1700))
     write_events(pen_fd, eraser_move(x1, y, x2, y, 1700))
     write_events(pen_fd, eraser_up())
+
+void eraser_clear_area(int x1, y1, x2, y2):
+  // Dense erasure with 5px spacing for complete coverage
+  debug "CLEARING AREA", x1, y1, x2, y2
+  eraser_fill_area(x1, y1, x2, y2, 5)
 
 
 
@@ -404,6 +424,11 @@ void act_on_line(string line):
       ss >> ox >> oy >> x >> y
     else:
       debug "UNRECOGNIZED DRAW LINE", line, "REQUIRES 4 COORDINATES"
+  if action == "fill" || action == "clear":
+    if len(tokens) == 6 || len(tokens) == 7:
+      ss >> ox >> oy >> x >> y
+    else:
+      debug "UNRECOGNIZED FILL/CLEAR", line, "REQUIRES 4 COORDINATES"
   if action == "circle":
     if len(tokens) == 6:
       ss >> ox >> oy >> x >> y
@@ -469,6 +494,37 @@ void act_on_line(string line):
     else if action == "bezier":
       pen_draw_bezier(coors)
 
+    else:
+      debug "UNKNOWN ACTION", action, "IN", line
+  else if tool == "eraser":
+    if action == "up":
+      write_events(pen_fd, eraser_up())
+    else if action == "down":
+      write_events(pen_fd, eraser_down(x, y, 1700))
+      pen_x = x
+      pen_y = y
+    else if action == "move":
+      if ox != -1 && oy != -1:
+        write_events(pen_fd, eraser_move(ox, oy, x, y, 1700))
+      else:
+        write_events(pen_fd, eraser_move(pen_x, pen_y, x, y, 1700))
+      pen_x = x
+      pen_y = y
+    else if action == "line":
+      eraser_draw_line(ox, oy, x, y)
+      usleep(200 * 1000)
+    else if action == "rectangle":
+      eraser_draw_rectangle(ox, oy, x, y)
+      usleep(200 * 1000)
+    else if action == "fill":
+      int spacing = 8
+      if len(tokens) == 7:
+        ss >> spacing
+      eraser_fill_area(ox, oy, x, y, spacing)
+      usleep(200 * 1000)
+    else if action == "clear":
+      eraser_clear_area(ox, oy, x, y)
+      usleep(200 * 1000)
     else:
       debug "UNKNOWN ACTION", action, "IN", line
   else if tool == "finger":
