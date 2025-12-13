@@ -47,29 +47,35 @@ class CircuitRenderer:
         """
         commands = []
 
-        # Calculate scaling to fit screen
-        scale = self._calculate_scale(placed_circuit['components'])
+        # Calculate scaling and transformation to fit screen
+        scale, offset_x, offset_y = self._calculate_transform(placed_circuit['components'])
 
-        print(f"Rendering at scale: {scale:.2f}x", file=sys.stderr)
+        print(f"Rendering at scale: {scale:.2f}x, offset: ({offset_x:.0f}, {offset_y:.0f})", file=sys.stderr)
 
         # Render components
         for comp in placed_circuit['components']:
-            comp_commands = self._render_component(comp, scale, rm2_ip, dry_run)
+            comp_commands = self._render_component(comp, scale, offset_x, offset_y, rm2_ip, dry_run)
             commands.extend(comp_commands)
 
         # Render wires
         for wire in placed_circuit.get('wires', []):
-            wire_commands = self._render_wire(wire, scale)
+            wire_commands = self._render_wire(wire, scale, offset_x, offset_y)
             commands.extend(wire_commands)
 
         return commands
 
-    def _calculate_scale(self, components: List[Dict]) -> float:
-        """Calculate scale factor to fit circuit on screen"""
-        if not components:
-            return 1.0
+    def _calculate_transform(self, components: List[Dict]) -> tuple:
+        """
+        Calculate transformation to fit circuit on screen
 
-        # Find bounding box
+        Returns: (scale, offset_x, offset_y)
+        - scale: Scaling factor
+        - offset_x, offset_y: Translation to center circuit with margins
+        """
+        if not components:
+            return 1.0, 0, 0
+
+        # Find bounding box in placement coordinate space
         min_x = min_y = float('inf')
         max_x = max_y = float('-inf')
 
@@ -82,9 +88,6 @@ class CircuitRenderer:
             min_y = min(min_y, pos['y'] - size['height']/2)
             max_y = max(max_y, pos['y'] + size['height']/2)
 
-        # Add wires to bounds
-        # (Simplified - wires already considered in placement)
-
         circuit_width = max_x - min_x
         circuit_height = max_y - min_y
 
@@ -96,10 +99,15 @@ class CircuitRenderer:
         # Use smaller scale to fit both dimensions
         scale = min(scale_x, scale_y, 2.0)  # Cap at 2x
 
-        return scale
+        # Calculate offset to center scaled circuit on screen
+        # Transformation: screen_pos = (placement_pos - min) * scale + margin
+        offset_x = -min_x * scale + margin
+        offset_y = -min_y * scale + margin
 
-    def _render_component(self, comp: Dict, scale: float, rm2_ip: str = None,
-                         dry_run: bool = False) -> List[str]:
+        return scale, offset_x, offset_y
+
+    def _render_component(self, comp: Dict, scale: float, offset_x: float, offset_y: float,
+                         rm2_ip: str = None, dry_run: bool = False) -> List[str]:
         """Render single component using draw_component.sh"""
         commands = []
 
@@ -108,9 +116,9 @@ class CircuitRenderer:
         pos = comp['position']
         size = comp['size']
 
-        # Calculate scaled position and size
-        scaled_x = int(pos['x'] * scale)
-        scaled_y = int(pos['y'] * scale)
+        # Apply transformation: screen_pos = placement_pos * scale + offset
+        scaled_x = int(pos['x'] * scale + offset_x)
+        scaled_y = int(pos['y'] * scale + offset_y)
         scaled_width = int(size['width'] * scale)
         scaled_height = int(size['height'] * scale)
 
@@ -141,7 +149,7 @@ class CircuitRenderer:
 
         return commands
 
-    def _render_wire(self, wire: Dict, scale: float) -> List[str]:
+    def _render_wire(self, wire: Dict, scale: float, offset_x: float, offset_y: float) -> List[str]:
         """Render wire path"""
         commands = []
         path = wire['path']
@@ -149,13 +157,13 @@ class CircuitRenderer:
         if len(path) < 2:
             return commands
 
-        # Start wire
+        # Start wire (apply transformation)
         first = path[0]
-        commands.append(f"pen down {int(first['x'] * scale)} {int(first['y'] * scale)}")
+        commands.append(f"pen down {int(first['x'] * scale + offset_x)} {int(first['y'] * scale + offset_y)}")
 
-        # Draw segments
+        # Draw segments (apply transformation)
         for point in path[1:]:
-            commands.append(f"pen move {int(point['x'] * scale)} {int(point['y'] * scale)}")
+            commands.append(f"pen move {int(point['x'] * scale + offset_x)} {int(point['y'] * scale + offset_y)}")
 
         commands.append("pen up")
 
