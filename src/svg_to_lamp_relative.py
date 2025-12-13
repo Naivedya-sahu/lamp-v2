@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-svg_to_lamp_relative.py - SVG to Relative Lamp Coordinates Converter
+SVG to Relative Lamp Coordinates - High Fidelity Version
 
 Converts SVG components to relative coordinate pen commands (0.0-1.0 normalized).
-Suitable for component library integration with anchor point systems.
+Based on svg_to_lamp_smartv2.py but outputs relative coordinates for component library.
 
 Features:
-- Outputs relative coordinates (0.0-1.0) instead of absolute pixels
-- Intelligent line vs curve detection (minimizes pen commands)
-- Douglas-Peucker simplification
+- Full SVG path parsing with svgpathtools (preserves all strokes)
+- Intelligent line vs curve detection
+- Outputs relative coordinates [0.0-1.0] instead of absolute pixels
 - Pin visualization with --show-pins flag
-- Auto-bounds calculation
+- Douglas-Peucker path simplification
 
 Usage:
     python3 svg_to_lamp_relative.py component.svg
@@ -19,9 +19,9 @@ Usage:
 """
 
 import sys
-import argparse
 from pathlib import Path
 import xml.etree.ElementTree as ET
+from svgpathtools import parse_path, Line, Arc, CubicBezier, QuadraticBezier
 import re
 import math
 
@@ -49,130 +49,120 @@ def simplify_points(points, tolerance=1.0):
     simplified.append(points[-1])
     return simplified
 
-def parse_path_simple(d):
+def smart_sample_segment(seg, tolerance=1.0):
     """
-    Simple SVG path parser for common commands (M, L, H, V, Z)
-    Returns list of (x, y) points
+    Intelligently sample a path segment:
+    - Line: return only endpoints
+    - Curve: sample based on curvature, then simplify
     """
-    points = []
-    commands = re.findall(r'[MmLlHhVvZzCcSsQqTtAa]|[-+]?[0-9]*\.?[0-9]+', d)
+    if isinstance(seg, Line):
+        # Straight line: only need start and end
+        return [(seg.start.real, seg.start.imag), (seg.end.real, seg.end.imag)]
 
-    current_x, current_y = 0, 0
-    i = 0
+    else:
+        # Curve: sample and simplify
+        seg_len = seg.length(error=1e-5)
 
-    while i < len(commands):
-        cmd = commands[i]
-
-        if cmd in 'Mm':
-            # Move to
-            i += 1
-            x = float(commands[i])
-            i += 1
-            y = float(commands[i])
-            if cmd == 'm':  # relative
-                current_x += x
-                current_y += y
-            else:  # absolute
-                current_x = x
-                current_y = y
-            points.append((current_x, current_y))
-
-        elif cmd in 'Ll':
-            # Line to
-            i += 1
-            x = float(commands[i])
-            i += 1
-            y = float(commands[i])
-            if cmd == 'l':  # relative
-                current_x += x
-                current_y += y
-            else:  # absolute
-                current_x = x
-                current_y = y
-            points.append((current_x, current_y))
-
-        elif cmd in 'Hh':
-            # Horizontal line
-            i += 1
-            x = float(commands[i])
-            if cmd == 'h':  # relative
-                current_x += x
-            else:  # absolute
-                current_x = x
-            points.append((current_x, current_y))
-
-        elif cmd in 'Vv':
-            # Vertical line
-            i += 1
-            y = float(commands[i])
-            if cmd == 'v':  # relative
-                current_y += y
-            else:  # absolute
-                current_y = y
-            points.append((current_x, current_y))
-
-        elif cmd in 'Zz':
-            # Close path - return to first point
-            if points:
-                points.append(points[0])
-
+        # Adaptive sampling based on segment length
+        if seg_len < 10:
+            n = 3
+        elif seg_len < 50:
+            n = 5
+        elif seg_len < 100:
+            n = 8
         else:
-            # For complex curves (C, S, Q, T, A), approximate with straight line to endpoint
-            # This is a simple fallback - for production use svgpathtools
-            if cmd in 'CcSsQqTtAa':
-                # Skip intermediate control points and just get endpoint
-                if cmd in 'Cc':
-                    i += 5  # Skip control points
-                    x = float(commands[i])
-                    i += 1
-                    y = float(commands[i])
-                elif cmd in 'Ss':
-                    i += 3
-                    x = float(commands[i])
-                    i += 1
-                    y = float(commands[i])
-                elif cmd in 'Qq':
-                    i += 3
-                    x = float(commands[i])
-                    i += 1
-                    y = float(commands[i])
-                elif cmd in 'Tt':
-                    i += 1
-                    x = float(commands[i])
-                    i += 1
-                    y = float(commands[i])
-                elif cmd in 'Aa':
-                    i += 5
-                    x = float(commands[i])
-                    i += 1
-                    y = float(commands[i])
+            n = max(8, min(20, int(seg_len * 0.1)))
 
-                if cmd.islower():  # relative
-                    current_x += x
-                    current_y += y
-                else:  # absolute
-                    current_x = x
-                    current_y = y
-                points.append((current_x, current_y))
+        points = []
+        for i in range(n + 1):
+            t = i / n
+            p = seg.point(t)
+            points.append((p.real, p.imag))
 
-        i += 1
+        # Simplify to remove collinear points
+        return simplify_points(points, tolerance)
 
-    return points
+def smart_parse_path(d, tolerance=1.0):
+    """
+    Parse SVG path with intelligent sampling:
+    - Detects lines vs curves
+    - Minimizes commands for straight segments
+    - Preserves curve quality
+    """
+    try:
+        sp = parse_path(d)
+    except:
+        return []
 
-def collect_bounds(root, show_pins=False):
-    """Calculate bounding box and collect all drawable elements"""
-    minx = float('inf')
-    miny = float('inf')
-    maxx = float('-inf')
-    maxy = float('-inf')
-    elements = []
+    all_points = []
+
+    for seg in sp:
+        seg_points = smart_sample_segment(seg, tolerance)
+
+        # Avoid duplicate points between segments
+        if all_points and seg_points:
+            # Check if last point of previous segment equals first point of current
+            last = all_points[-1]
+            first = seg_points[0]
+            if abs(last[0] - first[0]) < 1e-6 and abs(last[1] - first[1]) < 1e-6:
+                all_points.extend(seg_points[1:])
+            else:
+                all_points.extend(seg_points)
+        else:
+            all_points.extend(seg_points)
+
+    # Final simplification pass
+    return simplify_points(all_points, tolerance)
+
+def extract_pins(root):
+    """Extract pin information from SVG"""
+    pins = []
 
     for elem in root.iter():
         tag = elem.tag.split('}')[-1]
         elem_id = elem.get('id', '')
 
-        # Skip pin circles unless show_pins is True
-        if 'pin' in elem_id.lower() and not show_pins:
+        if 'pin' in elem_id.lower():
+            if tag == 'circle':
+                cx = float(elem.get('cx', 0))
+                cy = float(elem.get('cy', 0))
+                r = float(elem.get('r', 0))
+                pins.append({
+                    'id': elem_id,
+                    'x': cx,
+                    'y': cy,
+                    'r': r
+                })
+            elif tag == 'path':
+                # Pin as path (some SVGs use this)
+                d = elem.get('d', '')
+                match = re.search(r'[Mm]\s*([\d.-]+)[,\s]+([\d.-]+)', d)
+                if match:
+                    cx = float(match.group(1))
+                    cy = float(match.group(2))
+                    pins.append({
+                        'id': elem_id,
+                        'x': cx,
+                        'y': cy,
+                        'r': 1.0
+                    })
+
+    return pins
+
+def collect_bounds(root, show_pins=False):
+    """Calculate bounding box of drawable elements"""
+    minx = float('inf')
+    miny = float('inf')
+    maxx = float('-inf')
+    maxy = float('-inf')
+
+    for elem in root.iter():
+        tag = elem.tag.split('}')[-1]
+        elem_id = elem.get('id', '')
+        is_pin = 'pin' in elem_id.lower()
+
+        # Skip pins from bounds unless showing them
+        if is_pin and not show_pins:
             continue
 
         if tag == 'path':
@@ -180,14 +170,12 @@ def collect_bounds(root, show_pins=False):
             if not d:
                 continue
             try:
-                pts = parse_path_simple(d)
-                if pts:
-                    for x, y in pts:
-                        minx = min(minx, x)
-                        maxx = max(maxx, x)
-                        miny = min(miny, y)
-                        maxy = max(maxy, y)
-                    elements.append(('path', elem_id, pts))
+                pts = smart_parse_path(d, tolerance=0.5)
+                for x, y in pts:
+                    minx = min(minx, x)
+                    maxx = max(maxx, x)
+                    miny = min(miny, y)
+                    maxy = max(maxy, y)
             except:
                 continue
 
@@ -200,7 +188,6 @@ def collect_bounds(root, show_pins=False):
             maxx = max(maxx, x + w)
             miny = min(miny, y)
             maxy = max(maxy, y + h)
-            elements.append(('rect', elem_id, (x, y, w, h)))
 
         elif tag == 'circle':
             cx = float(elem.get('cx', 0))
@@ -210,7 +197,6 @@ def collect_bounds(root, show_pins=False):
             maxx = max(maxx, cx + r)
             miny = min(miny, cy - r)
             maxy = max(maxy, cy + r)
-            elements.append(('circle', elem_id, (cx, cy, r)))
 
         elif tag == 'line':
             x1 = float(elem.get('x1', 0))
@@ -221,184 +207,258 @@ def collect_bounds(root, show_pins=False):
             maxx = max(maxx, x1, x2)
             miny = min(miny, y1, y2)
             maxy = max(maxy, y1, y2)
-            elements.append(('line', elem_id, (x1, y1, x2, y2)))
 
         elif tag in ('polyline', 'polygon'):
-            pts_str = elem.get('points', '')
-            pts_nums = [float(n) for n in re.findall(r'-?\d*\.?\d+', pts_str)]
-            pts = [(pts_nums[i], pts_nums[i+1]) for i in range(0, len(pts_nums)-1, 2)]
-            if pts:
-                for x, y in pts:
-                    minx = min(minx, x)
-                    maxx = max(maxx, x)
-                    miny = min(miny, y)
-                    maxy = max(maxy, y)
-                elements.append(('polyline' if tag == 'polyline' else 'polygon', elem_id, pts))
+            pts = [float(n) for n in re.findall(r'-?\d*\.?\d+', elem.get('points', ''))]
+            for i in range(0, len(pts), 2):
+                if i < len(pts):
+                    minx = min(minx, pts[i])
+                    maxx = max(maxx, pts[i])
+            for i in range(1, len(pts), 2):
+                if i < len(pts):
+                    miny = min(miny, pts[i])
+                    maxy = max(maxy, pts[i])
 
-    return (minx, miny, maxx, maxy), elements
+    return (minx, miny, maxx, maxy)
 
 def to_relative(x, y, bounds):
-    """Convert absolute SVG coordinates to relative (0.0-1.0)"""
+    """Convert absolute SVG coordinates to relative [0.0, 1.0]"""
     minx, miny, maxx, maxy = bounds
     width = maxx - minx
     height = maxy - miny
 
     if width == 0 or height == 0:
-        return 0.0, 0.0
+        return 0.5, 0.5
 
     rel_x = (x - minx) / width
     rel_y = (y - miny) / height
 
+    # Clamp to [0, 1]
+    rel_x = max(0.0, min(1.0, rel_x))
+    rel_y = max(0.0, min(1.0, rel_y))
+
     return rel_x, rel_y
 
-def generate_relative_commands(elements, bounds, tolerance):
-    """Generate relative coordinate pen commands"""
-    commands = []
+def main():
+    # Parse command line arguments
+    show_pins = False
+    tolerance = 1.0
+    svg_file = None
 
-    for elem_type, elem_id, data in elements:
-        if elem_type == 'path':
-            pts = simplify_points(data, tolerance)
-            if not pts:
+    i = 1
+    while i < len(sys.argv):
+        arg = sys.argv[i]
+        if arg == '--show-pins':
+            show_pins = True
+            i += 1
+        elif arg == '--tolerance':
+            if i + 1 < len(sys.argv):
+                tolerance = float(sys.argv[i + 1])
+                i += 2
+            else:
+                print("Error: --tolerance requires a value", file=sys.stderr)
+                sys.exit(1)
+        elif not svg_file:
+            svg_file = arg
+            i += 1
+        else:
+            # Assume numeric tolerance without flag
+            try:
+                tolerance = float(arg)
+                i += 1
+            except ValueError:
+                print(f"Error: Unknown argument: {arg}", file=sys.stderr)
+                sys.exit(1)
+
+    if not svg_file:
+        print("Usage: python3 svg_to_lamp_relative.py file.svg [--tolerance VALUE] [--show-pins]")
+        print("\nArguments:")
+        print("  --tolerance VALUE - Simplification tolerance in SVG units (default: 1.0)")
+        print("                      Lower = more detail, Higher = fewer commands")
+        print("  --show-pins       - Include pin circles in output")
+        print("\nExamples:")
+        print("  python3 svg_to_lamp_relative.py R.svg")
+        print("  python3 svg_to_lamp_relative.py R.svg --show-pins")
+        print("  python3 svg_to_lamp_relative.py R.svg --tolerance 2.0")
+        print("  python3 svg_to_lamp_relative.py OPAMP.svg --tolerance 0.5 --show-pins")
+        print("\nOutput: Pen commands with relative coordinates [0.0, 1.0]")
+        sys.exit(1)
+
+    if not Path(svg_file).exists():
+        print(f"Error: File not found: {svg_file}", file=sys.stderr)
+        sys.exit(1)
+
+    tree = ET.parse(svg_file)
+    root = tree.getroot()
+
+    # Extract pins first
+    pins = extract_pins(root)
+    if pins:
+        print(f"# Found {len(pins)} pins:", file=sys.stderr)
+        for pin in pins:
+            print(f"#   {pin['id']}: ({pin['x']:.2f}, {pin['y']:.2f})", file=sys.stderr)
+    else:
+        print("# Warning: No pins found in SVG", file=sys.stderr)
+
+    # Calculate bounds
+    bounds = collect_bounds(root, show_pins)
+    minx, miny, maxx, maxy = bounds
+
+    if minx == float('inf'):
+        print("# No drawable content found", file=sys.stderr)
+        sys.exit(0)
+
+    svg_width = maxx - minx
+    svg_height = maxy - miny
+
+    print(f"# SVG: {Path(svg_file).name}", file=sys.stderr)
+    print(f"# Bounds: ({minx:.2f}, {miny:.2f}) to ({maxx:.2f}, {maxy:.2f})", file=sys.stderr)
+    print(f"# Size: {svg_width:.2f} x {svg_height:.2f}", file=sys.stderr)
+    print(f"# Tolerance: {tolerance}", file=sys.stderr)
+    print(f"# Pin visualization: {'ENABLED' if show_pins else 'DISABLED'}", file=sys.stderr)
+
+    # Generate pen commands with relative coordinates
+    commands = []
+    path_count = 0
+    pin_count = 0
+
+    for elem in root.iter():
+        tag = elem.tag.split('}')[-1]
+        elem_id = elem.get('id', '')
+        is_pin = 'pin' in elem_id.lower()
+
+        if tag == 'path':
+            # Skip pins unless showing them
+            if is_pin and not show_pins:
                 continue
 
-            # First point - pen down
-            x0, y0 = pts[0]
-            rel_x, rel_y = to_relative(x0, y0, bounds)
-            commands.append(f"pen down {rel_x:.6f} {rel_y:.6f}")
+            d = elem.get('d', '')
+            if not d:
+                continue
 
-            # Subsequent points - pen move
-            for x, y in pts[1:]:
-                rel_x, rel_y = to_relative(x, y, bounds)
-                commands.append(f"pen move {rel_x:.6f} {rel_y:.6f}")
+            try:
+                pts = smart_parse_path(d, tolerance)
+                if not pts:
+                    continue
 
-            commands.append("pen up")
+                path_count += 1
 
-        elif elem_type == 'line':
-            x1, y1, x2, y2 = data
-            rx1, ry1 = to_relative(x1, y1, bounds)
-            rx2, ry2 = to_relative(x2, y2, bounds)
-            commands.append(f"pen down {rx1:.6f} {ry1:.6f}")
-            commands.append(f"pen move {rx2:.6f} {ry2:.6f}")
-            commands.append("pen up")
+                # Convert to relative and emit pen commands
+                x0, y0 = pts[0]
+                rel_x, rel_y = to_relative(x0, y0, bounds)
+                commands.append(f"pen down {rel_x:.6f} {rel_y:.6f}")
 
-        elif elem_type == 'rect':
-            x, y, w, h = data
+                for x, y in pts[1:]:
+                    rel_x, rel_y = to_relative(x, y, bounds)
+                    commands.append(f"pen move {rel_x:.6f} {rel_y:.6f}")
+
+                commands.append("pen up")
+
+            except Exception as e:
+                print(f"Warning: Failed to parse path: {e}", file=sys.stderr)
+                continue
+
+        elif tag == 'rect':
+            if is_pin and not show_pins:
+                continue
+
+            x = float(elem.get('x', 0))
+            y = float(elem.get('y', 0))
+            w = float(elem.get('width', 0))
+            h = float(elem.get('height', 0))
+
+            # Rectangle as path
             rx1, ry1 = to_relative(x, y, bounds)
-            rx2, ry2 = to_relative(x + w, y + h, bounds)
+            rx2, ry2 = to_relative(x + w, y, bounds)
+            rx3, ry3 = to_relative(x + w, y + h, bounds)
+            rx4, ry4 = to_relative(x, y + h, bounds)
+
             commands.append(f"pen down {rx1:.6f} {ry1:.6f}")
-            commands.append(f"pen move {rx2:.6f} {ry1:.6f}")
             commands.append(f"pen move {rx2:.6f} {ry2:.6f}")
-            commands.append(f"pen move {rx1:.6f} {ry2:.6f}")
+            commands.append(f"pen move {rx3:.6f} {ry3:.6f}")
+            commands.append(f"pen move {rx4:.6f} {ry4:.6f}")
             commands.append(f"pen move {rx1:.6f} {ry1:.6f}")
             commands.append("pen up")
 
-        elif elem_type == 'circle':
-            cx, cy, r = data
+        elif tag == 'circle':
+            cx = float(elem.get('cx', 0))
+            cy = float(elem.get('cy', 0))
+            r = float(elem.get('r', 0))
+
+            # Handle pin circles
+            if is_pin:
+                pin_count += 1
+                if not show_pins:
+                    continue
+                # Draw pin as small circle (will scale with component)
+                # Use fixed relative size (0.02 of component size)
+                r_rel = 0.02
+            else:
+                # Convert radius to relative
+                r_rel = r / max(svg_width, svg_height)
+
             # Approximate circle with 16-point polygon
             circle_pts = []
-            for i in range(17):  # 17 points to close the circle
+            for i in range(17):  # 17 points to close circle
                 angle = 2 * math.pi * i / 16
                 x = cx + r * math.cos(angle)
                 y = cy + r * math.sin(angle)
                 circle_pts.append((x, y))
 
-            rel_x, rel_y = to_relative(circle_pts[0][0], circle_pts[0][1], bounds)
-            commands.append(f"pen down {rel_x:.6f} {rel_y:.6f}")
+            # Convert to relative and draw
+            if circle_pts:
+                rel_x, rel_y = to_relative(circle_pts[0][0], circle_pts[0][1], bounds)
+                commands.append(f"pen down {rel_x:.6f} {rel_y:.6f}")
 
-            for x, y in circle_pts[1:]:
-                rel_x, rel_y = to_relative(x, y, bounds)
-                commands.append(f"pen move {rel_x:.6f} {rel_y:.6f}")
+                for x, y in circle_pts[1:]:
+                    rel_x, rel_y = to_relative(x, y, bounds)
+                    commands.append(f"pen move {rel_x:.6f} {rel_y:.6f}")
 
-            commands.append("pen up")
+                commands.append("pen up")
 
-        elif elem_type in ('polyline', 'polygon'):
-            pts = data
-            if not pts:
+        elif tag == 'line':
+            if is_pin and not show_pins:
                 continue
 
-            x0, y0 = pts[0]
-            rel_x, rel_y = to_relative(x0, y0, bounds)
-            commands.append(f"pen down {rel_x:.6f} {rel_y:.6f}")
+            x1 = float(elem.get('x1', 0))
+            y1 = float(elem.get('y1', 0))
+            x2 = float(elem.get('x2', 0))
+            y2 = float(elem.get('y2', 0))
 
-            for x, y in pts[1:]:
-                rel_x, rel_y = to_relative(x, y, bounds)
-                commands.append(f"pen move {rel_x:.6f} {rel_y:.6f}")
+            rx1, ry1 = to_relative(x1, y1, bounds)
+            rx2, ry2 = to_relative(x2, y2, bounds)
 
-            # Close polygon
-            if elem_type == 'polygon':
-                rel_x, rel_y = to_relative(pts[0][0], pts[0][1], bounds)
-                commands.append(f"pen move {rel_x:.6f} {rel_y:.6f}")
-
+            commands.append(f"pen down {rx1:.6f} {ry1:.6f}")
+            commands.append(f"pen move {rx2:.6f} {ry2:.6f}")
             commands.append("pen up")
 
-    return commands
+        elif tag in ('polyline', 'polygon'):
+            if is_pin and not show_pins:
+                continue
 
-def main():
-    parser = argparse.ArgumentParser(
-        description='Convert SVG to relative coordinate lamp commands (0.0-1.0)',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  %(prog)s R.svg
-  %(prog)s R.svg --show-pins
-  %(prog)s R.svg --tolerance 2.0
-  %(prog)s R.svg --show-pins --tolerance 1.5
+            pts = [float(n) for n in re.findall(r'-?\d*\.?\d+', elem.get('points', ''))]
+            if len(pts) >= 4:
+                x0, y0 = pts[0], pts[1]
+                rel_x, rel_y = to_relative(x0, y0, bounds)
+                commands.append(f"pen down {rel_x:.6f} {rel_y:.6f}")
 
-Output format:
-  pen down <rel_x> <rel_y>
-  pen move <rel_x> <rel_y>
-  pen up
+                for i in range(2, len(pts), 2):
+                    rel_x, rel_y = to_relative(pts[i], pts[i + 1], bounds)
+                    commands.append(f"pen move {rel_x:.6f} {rel_y:.6f}")
 
-Where rel_x and rel_y are in range [0.0, 1.0]
-        """
-    )
+                if tag == 'polygon':
+                    rel_x, rel_y = to_relative(pts[0], pts[1], bounds)
+                    commands.append(f"pen move {rel_x:.6f} {rel_y:.6f}")
 
-    parser.add_argument('svg_file', help='Path to SVG file')
-    parser.add_argument('--show-pins', action='store_true',
-                       help='Show pin circles (normally hidden)')
-    parser.add_argument('--tolerance', type=float, default=1.0,
-                       help='Simplification tolerance (default: 1.0, lower=more detail)')
+                commands.append("pen up")
 
-    args = parser.parse_args()
+    # Output statistics
+    print(f"# Processed {path_count} drawable elements", file=sys.stderr)
+    print(f"# Total commands: {len(commands)}", file=sys.stderr)
+    print(f"# Pins: {len(pins)} ({'drawn' if show_pins else 'skipped'})", file=sys.stderr)
+    print("", file=sys.stderr)
 
-    # Validate file exists
-    svg_path = Path(args.svg_file)
-    if not svg_path.exists():
-        print(f"Error: File not found: {args.svg_file}", file=sys.stderr)
-        sys.exit(1)
-
-    # Parse SVG
-    try:
-        tree = ET.parse(args.svg_file)
-        root = tree.getroot()
-    except Exception as e:
-        print(f"Error: Failed to parse SVG: {e}", file=sys.stderr)
-        sys.exit(1)
-
-    # Collect bounds and elements
-    bounds, elements = collect_bounds(root, args.show_pins)
-
-    if not elements:
-        print("# No drawable content found", file=sys.stderr)
-        sys.exit(0)
-
-    minx, miny, maxx, maxy = bounds
-    width = maxx - minx
-    height = maxy - miny
-
-    # Generate relative commands
-    commands = generate_relative_commands(elements, bounds, args.tolerance)
-
-    # Output statistics to stderr
-    print(f"# SVG: {svg_path.name}", file=sys.stderr)
-    print(f"# Bounds: ({minx:.2f}, {miny:.2f}) to ({maxx:.2f}, {maxy:.2f})", file=sys.stderr)
-    print(f"# Size: {width:.2f} x {height:.2f}", file=sys.stderr)
-    print(f"# Elements: {len(elements)}", file=sys.stderr)
-    print(f"# Commands: {len(commands)}", file=sys.stderr)
-    print(f"# Show pins: {args.show_pins}", file=sys.stderr)
-    print(f"# Tolerance: {args.tolerance}", file=sys.stderr)
-
-    # Output commands to stdout
+    # Output pen commands
     print("\n".join(commands))
 
 if __name__ == '__main__':

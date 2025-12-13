@@ -47,3 +47,6 @@ resources/repos/rmkit/src/.genie_cpp/
 # Component library generated files
 exported_symbols/
 /tmp/*.svg
+
+# Generated lamp command files
+*.lamp
