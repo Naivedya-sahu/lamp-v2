@@ -242,33 +242,47 @@ def to_relative(x, y, bounds):
 def main():
     # Parse command line arguments
     show_pins = False
-    args = []
+    tolerance = 1.0
+    svg_file = None
 
-    for arg in sys.argv[1:]:
+    i = 1
+    while i < len(sys.argv):
+        arg = sys.argv[i]
         if arg == '--show-pins':
             show_pins = True
+            i += 1
+        elif arg == '--tolerance':
+            if i + 1 < len(sys.argv):
+                tolerance = float(sys.argv[i + 1])
+                i += 2
+            else:
+                print("Error: --tolerance requires a value", file=sys.stderr)
+                sys.exit(1)
+        elif not svg_file:
+            svg_file = arg
+            i += 1
         else:
-            args.append(arg)
+            # Assume numeric tolerance without flag
+            try:
+                tolerance = float(arg)
+                i += 1
+            except ValueError:
+                print(f"Error: Unknown argument: {arg}", file=sys.stderr)
+                sys.exit(1)
 
-    if len(args) < 1:
-        print("Usage: python3 svg_to_lamp_relative.py file.svg [tolerance] [--show-pins]")
+    if not svg_file:
+        print("Usage: python3 svg_to_lamp_relative.py file.svg [--tolerance VALUE] [--show-pins]")
         print("\nArguments:")
-        print("  tolerance   - Simplification tolerance in SVG units (default: 1.0)")
-        print("                Lower = more detail, Higher = fewer commands")
-        print("  --show-pins - Include pin circles in output")
+        print("  --tolerance VALUE - Simplification tolerance in SVG units (default: 1.0)")
+        print("                      Lower = more detail, Higher = fewer commands")
+        print("  --show-pins       - Include pin circles in output")
         print("\nExamples:")
         print("  python3 svg_to_lamp_relative.py R.svg")
         print("  python3 svg_to_lamp_relative.py R.svg --show-pins")
-        print("  python3 svg_to_lamp_relative.py R.svg 2.0")
-        print("  python3 svg_to_lamp_relative.py OPAMP.svg 0.5 --show-pins")
+        print("  python3 svg_to_lamp_relative.py R.svg --tolerance 2.0")
+        print("  python3 svg_to_lamp_relative.py OPAMP.svg --tolerance 0.5 --show-pins")
         print("\nOutput: Pen commands with relative coordinates [0.0, 1.0]")
         sys.exit(1)
-
-    svg_file = args[0]
-    tolerance = 1.0
-
-    if len(args) > 1:
-        tolerance = float(args[1])
 
     if not Path(svg_file).exists():
         print(f"Error: File not found: {svg_file}", file=sys.stderr)
