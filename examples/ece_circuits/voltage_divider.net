@@ -1,0 +1,5 @@
+* Voltage Divider Circuit
+* Fundamental circuit for voltage scaling
+V1 VIN 0 12V
+R1 VIN VOUT 10k
+R2 VOUT 0 10k

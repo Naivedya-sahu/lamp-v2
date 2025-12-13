@@ -1,0 +1,5 @@
+* RC Low-Pass Filter
+* Common in signal processing and filtering applications
+V1 IN 0 5V
+R1 IN OUT 10k
+C1 OUT 0 100nF
