@@ -1,0 +1,5 @@
+* RL Circuit
+* Inductor charging/discharging analysis
+V1 IN 0 12V
+R1 IN OUT 1k
+L1 OUT 0 100mH
