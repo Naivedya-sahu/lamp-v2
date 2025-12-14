@@ -1,28 +1,41 @@
-# Simple font test - no rmkit/rm2fb dependencies
-# Just validates font loading with stb_truetype
+EXE=font_test
+FILES=main.cpy
+APP=$(EXE)
 
-CXX = g++
-CXXFLAGS = -std=c++17 -Wall -O2
-STB_DIR = ../../resources/rmkit/src/vendor/stb
+# Paths - use realpath to get absolute paths
+RMKIT_ROOT=$(realpath ../../resources/rmkit)
+BUILD_DIR=$(RMKIT_ROOT)/src/build
+CPP_DIR=$(RMKIT_ROOT)/src/.$(APP)_cpp
+STB_OBJ=$(BUILD_DIR)/stb.arm.o
 
-# For cross-compilation to RM2 ARM
-ARM_CXX = arm-linux-gnueabihf-g++
-ARM_FLAGS = -std=c++17 -static -O2
+# Compilation flags
+HOST?=10.11.99.1
+TARGET?=rm
+CROSS_TC?=arm-linux-gnueabihf
+CXX_BIN?=$(CROSS_TC)-g++
+CPP_FLAGS=-ldl -pthread -lpthread -fdata-sections -ffunction-sections -Wl,--gc-sections
+RMKIT_IMPL="RMKIT_IMPLEMENTATION"
+OKP_FLAGS=-ig $(RMKIT_IMPL) -ns -ni -for -d $(CPP_DIR)/ -o $(BUILD_DIR)/$(EXE) $(FILES)
 
-font_test: main.cpy
-	$(CXX) $(CXXFLAGS) -I$(STB_DIR) main.cpy \
-		$(STB_DIR)/stb.cpp \
-		-o font_test
+compile:
+ifeq ($(TARGET),rm)
+	make compile_remarkable
+else ifeq ($(TARGET),x86)
+	make compile_x86
+else
+	make compile_remarkable
+endif
 
-arm: main.cpy
-	$(ARM_CXX) $(ARM_FLAGS) -I$(STB_DIR) main.cpy \
-		$(STB_DIR)/stb.cpp \
-		-o font_test.arm
+compile_remarkable:
+	CXX=$(CXX_BIN) okp $(OKP_FLAGS) $(STB_OBJ) -- -D"REMARKABLE=1" -D$(RMKIT_IMPL) $(CPP_FLAGS) -O2
+
+compile_x86:
+	CXX=g++ okp $(OKP_FLAGS) $(BUILD_DIR)/stb.x86.o -- -D$(RMKIT_IMPL) $(CPP_FLAGS)
+
+default: compile
 
 clean:
-	rm -f font_test font_test.arm
+	rm -rf $(CPP_DIR)
+	rm -f $(BUILD_DIR)/$(EXE)
 
-test: font_test
-	./font_test
-
-.PHONY: arm clean test
+.PHONY: compile compile_remarkable compile_x86 default clean

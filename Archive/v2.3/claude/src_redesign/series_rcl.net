@@ -1,0 +1,6 @@
+* Three-component series circuit
+* Demonstrates series spacing and clean routing
+VDC V1 VIN GND 5V
+R R1 VIN N1 10k
+C C1 N1 N2 100nF
+L L1 GND N2 10mH
