@@ -1,0 +1,72 @@
+{
+  "R": {
+    "width": 140,
+    "height": 33,
+    "anchor": {"x": 0.0, "y": 0.0},
+    "pins": [
+      {"id": "pin1", "dx": -70.0, "dy": 0.0},
+      {"id": "pin2", "dx": 70.0, "dy": 0.0}
+    ],
+    "pen_commands": [
+      ["pen", "down", -70.0, 0],
+      ["pen", "move", 70.0, 0],
+      ["pen", "up"]
+    ]
+  },
+  "C": {
+    "width": 100,
+    "height": 82,
+    "anchor": {"x": 0.0, "y": 0.0},
+    "pins": [
+      {"id": "pin1", "dx": -50.0, "dy": 0.0},
+      {"id": "pin2", "dx": 50.0, "dy": 0.0}
+    ],
+    "pen_commands": [
+      ["pen", "down", -50.0, 0],
+      ["pen", "move", 50.0, 0],
+      ["pen", "up"]
+    ]
+  },
+  "L": {
+    "width": 140,
+    "height": 60,
+    "anchor": {"x": 0.0, "y": 0.0},
+    "pins": [
+      {"id": "pin1", "dx": -70.0, "dy": 0.0},
+      {"id": "pin2", "dx": 70.0, "dy": 0.0}
+    ],
+    "pen_commands": [
+      ["pen", "down", -70.0, 0],
+      ["pen", "move", 70.0, 0],
+      ["pen", "up"]
+    ]
+  },
+  "VDC": {
+    "width": 100,
+    "height": 153,
+    "anchor": {"x": 0.0, "y": 0.0},
+    "pins": [
+      {"id": "pin1", "dx": 0.0, "dy": -76.5},
+      {"id": "pin2", "dx": 0.0, "dy": 76.5}
+    ],
+    "pen_commands": [
+      ["pen", "down", 0, -76.5],
+      ["pen", "move", 0, 76.5],
+      ["pen", "up"]
+    ]
+  },
+  "D": {
+    "width": 100,
+    "height": 51,
+    "anchor": {"x": 0.0, "y": 0.0},
+    "pins": [
+      {"id": "pin1", "dx": -50.0, "dy": 0.0},
+      {"id": "pin2", "dx": 50.0, "dy": 0.0}
+    ],
+    "pen_commands": [
+      ["pen", "down", -50.0, 0],
+      ["pen", "move", 50.0, 0],
+      ["pen", "up"]
+    ]
+  }
+}
