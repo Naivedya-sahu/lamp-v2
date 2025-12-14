@@ -34,16 +34,19 @@ ssh root@10.11.99.1 './genie_test'
 ## Test Fonts
 
 ```bash
-cd resources/rmkit
-ln -sf ../../src/font_test src/
-make font_test
-scp src/build/font_test root@10.11.99.1:/home/root/
+cd src/font_test
+make
+./font_test
+
+# For RM2 (requires ARM cross-compiler)
+make arm
+scp font_test.arm root@10.11.99.1:/home/root/font_test
 ssh root@10.11.99.1 './font_test'
 ```
 
-**Expected:** Text renders **FILLED**, not outlined
+**Expected:** Shows font metrics and validates TrueType outlines
 
-**If outlined:** See [FONT_GUIDE.md](FONT_GUIDE.md) - you need to convert OTF to TTF
+**If CFF/outlines warning:** See [FONT_GUIDE.md](FONT_GUIDE.md) - convert OTF to TTF
 
 ## Font Integration
 
