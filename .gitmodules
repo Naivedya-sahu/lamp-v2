@@ -1,0 +1,3 @@
+[submodule "resources/rm2fb"]
+	path = resources/rm2fb
+	url = https://github.com/ddvk/remarkable2-framebuffer
