@@ -1,4 +1,4 @@
-#include "../resources/rmkit/src/build/rmkit.h"
+#include "../build/rmkit.h"
 
 using namespace std
 
@@ -10,12 +10,13 @@ class FontTest:
 
   FontTest():
     scene = ui::make_scene()
+    auto fb = framebuffer::get()
     fb->clear_screen()
     fb->waveform_mode = WAVEFORM_MODE_GC16
 
     // Title
     auto title = new ui::Text(100, 100, 1200, 100, "Font Rendering Test")
-    title->set_style(ui::Stylesheet().font_size(48).font_weight(900))
+    title->set_style(ui::Stylesheet().font_size(48))
     scene->add(title)
     labels.push_back(title)
 
@@ -51,9 +52,11 @@ class FontTest:
       ui::MainLoop::read_input()
 
       // Exit on touch
-      if ui::MainLoop::in.touch.ev.size() > 0:
+      auto touch_events = ui::MainLoop::in.touch.events
+      if touch_events.size() > 0:
         running = false
 
+    auto fb = framebuffer::get()
     fb->clear_screen()
     fb->waveform_mode = WAVEFORM_MODE_DU
     ui::MainLoop::refresh()
