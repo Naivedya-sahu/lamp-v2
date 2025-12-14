@@ -2,24 +2,10 @@
 
 Native circuit schematic tool for RM2 e-ink tablet.
 
-## Quick Links
+## Documentation
 
-- **[QUICKSTART.md](QUICKSTART.md)** - Complete setup and usage guide
-- **Components**: 16 pre-made symbols in `assets/components/`
-- **Tools**: Font converter in `tools/`
-
-## Current Status
-
-✅ **Working**:
-- SVG to relative coordinates conversion (high fidelity)
-- Component rendering to RM2
-- 16 standardized symbols (R, C, L, OPAMP, transistors, etc.)
-- Bounding box handling (auto-fit screen)
-
-🚧 **In Progress**:
-- Symbol Selector app (manual placement tool)
-- Gesture controls via genie
-- Font integration (awaiting Monocraft.otf)
+- **[QUICKSTART.md](QUICKSTART.md)** - Setup and testing guide
+- **[FONT_GUIDE.md](FONT_GUIDE.md)** - Font integration (OTF→TTF, outlined text fix)
 
 ## Quick Test
 
@@ -30,50 +16,55 @@ bash src/draw_component.sh assets/components/R.svg \
 
 # Test gestures
 cd resources/rmkit && ln -sf ../../src/genie_test src/ && make genie_test
+
+# Test fonts
+cd resources/rmkit && ln -sf ../../src/font_test src/ && make font_test
 ```
+
+## Status
+
+✅ **Complete:**
+- 16 SVG circuit symbols (R, C, L, OPAMP, etc.)
+- High-fidelity SVG to relative coordinates
+- Component rendering with bounding box handling
+- Gesture control test (genie)
+- Font integration with validation
+
+🚧 **In Progress:**
+- Symbol Selector app (manual placement)
+- Gesture-based symbol palette
 
 ## Architecture
 
-**Old Approach** (v2.1-v2.3): Auto-layout with topology detection
-- Too complex for textbook-style diagrams
-- Difficult to control exact placement
-
-**New Approach** (v2.4+): Manual symbol placement
+**Manual Symbol Placement:**
 - Bottom-right symbol palette
-- Gesture-based controls
 - Tap to select, tap to place
-- Simple and intuitive
+- Gesture controls for copy/delete/rotate
+- Simple JSON file format
+- No complex auto-layout needed
 
 ## Tech Stack
 
 - **Language**: Python 3.9+, C++ (rmkit)
-- **Framework**: rmkit (native RM2 UI)
-- **Graphics**: SVG paths → relative coordinates
-- **Font**: stb_truetype
+- **Framework**: rmkit (native RM2)
+- **Graphics**: stb_truetype, SVG paths
 - **Target**: reMarkable 2 (1404×1872)
-
-## Development
-
-See **[QUICKSTART.md](QUICKSTART.md)** for:
-- Setup instructions
-- Build commands
-- Testing procedures
-- Troubleshooting
 
 ## File Structure
 
 ```
 lamp-v2/
-├── assets/components/      # 16 SVG symbols
-├── src/
-│   ├── genie_test/        # Gesture test app
-│   ├── symbol_selector/   # Main app (WIP)
-│   └── *.py, *.sh         # Utilities
-├── tools/                 # Development tools
 ├── QUICKSTART.md         # Setup guide
-└── README.md            # This file
+├── FONT_GUIDE.md         # Font integration
+├── assets/components/    # 16 SVG symbols
+├── src/
+│   ├── genie_test/      # Gesture test app
+│   ├── font_test/       # Font rendering test
+│   └── symbol_selector/ # Main app (WIP)
+└── tools/
+    └── font_to_lamp.py  # Font converter
 ```
 
-## License
+## Components Available
 
-See repository license file.
+R, C, L, D, ZD, GND, VDC, VAC, OPAMP, NPN_BJT, PNP_BJT, N_MOSFET, P_MOSFET, P_CAP, SW_OP, SW_CL
