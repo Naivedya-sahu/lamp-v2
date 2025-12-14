@@ -1,0 +1,11 @@
+Place Monocraft.otf font file here.
+
+Expected location: resources/Monocraft.otf
+
+Then convert it:
+  python3 tools/font_to_header.py \
+    resources/Monocraft.otf \
+    src/symbol_selector/font_embed.h \
+    Monocraft
+
+The font will be embedded in the symbol selector app for text labels.
