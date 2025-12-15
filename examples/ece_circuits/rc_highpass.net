@@ -1,5 +1,0 @@
-* RC High-Pass Filter
-* Blocks DC, passes high frequencies
-V1 IN 0 5V
-C1 IN OUT 100nF
-R1 OUT 0 10k

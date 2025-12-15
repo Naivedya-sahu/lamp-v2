@@ -1,6 +1,0 @@
-* RLC Series Resonant Circuit
-* Used in oscillators and filter design
-VDC V1 IN 0 5V
-R R1 IN N1 100
-L L1 N1 N2 10mH
-C C1 N2 0 100nF
