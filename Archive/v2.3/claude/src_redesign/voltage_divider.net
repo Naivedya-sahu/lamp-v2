@@ -1,5 +1,0 @@
-* Voltage Divider Circuit
-* Two resistors divide input voltage
-VDC V1 VIN GND 12V
-R R1 VIN VOUT 10k
-R R2 VOUT GND 10k
