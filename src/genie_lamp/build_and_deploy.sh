@@ -6,11 +6,13 @@ set -e
 echo "=== Genie-Lamp Build and Deploy Script ==="
 echo ""
 
-# Configuration
+# Get absolute paths
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LAMP_V2_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 HOST="${HOST:-10.11.99.1}"
-RMKIT_DIR="../../resources/rmkit"
+RMKIT_DIR="$LAMP_V2_DIR/resources/rmkit"
 BUILD_DIR="$RMKIT_DIR/build"
-GENIE_LAMP_DIR="$(pwd)"
+GENIE_LAMP_DIR="$SCRIPT_DIR"
 
 echo "Step 1: Creating symlink in rmkit src..."
 cd "$RMKIT_DIR"
