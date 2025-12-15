@@ -1,0 +1,1 @@
+echo -e "pen down 500 500\npen move 900 500\npen move 900 900\npen move 500 900\npen move 500 500\npen up" | ssh root@10.11.99.1 /opt/bin/lamp
