@@ -13,3 +13,6 @@ src/build/
 docs/html/
 .DS_Store
 
+
+# genie_lamp symlink (created during build, not to be committed)
+resources/rmkit/src/genie_lamp
