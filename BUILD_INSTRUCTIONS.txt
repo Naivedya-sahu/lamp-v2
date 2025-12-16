@@ -1,37 +1,53 @@
-GENIE_LAMP BUILD INSTRUCTIONS
+GENIE_LAMP BUILD INSTRUCTIONS (STANDALONE VERSION)
 
-1. Go to rmkit directory:
-   cd resources/rmkit
+OVERVIEW:
+genie_lamp is now a standalone C++ program with NO rmkit dependencies.
+It reads touch events directly from /dev/input/event2 and detects gestures.
 
-2. Build:
-   make genie_lamp TARGET=rm
+BUILD:
+1. cd src/genie_lamp
+2. make
+3. Binary: genie_lamp (in same directory)
 
-3. Binary will be at:
-   src/build/genie_lamp
+DEPLOY:
+  scp src/genie_lamp/genie_lamp root@10.11.99.1:/opt/bin/
 
-4. Deploy:
-   scp src/build/genie_lamp root@10.11.99.1:/opt/bin/
-   scp ../../src/genie_lamp/genie_lamp.conf root@10.11.99.1:/opt/etc/
+RUN:
+  ssh root@10.11.99.1 /opt/bin/genie_lamp
 
-5. Run:
-   ssh root@10.11.99.1 /opt/bin/genie_lamp /opt/etc/genie_lamp.conf
+WHAT IT DOES:
+- Detects 3-finger tap gesture
+- Draws a square using lamp when detected
+- No configuration file needed
+- No framebuffer dependencies
+- No rmkit UI framework dependencies
 
-WHAT WAS CHANGED FROM ORIGINAL GENIE:
-- Removed framebuffer::get() calls (gesture_parser.cpy build_swipe_gesture and build_tap_gesture)
-- Removed ui::MainLoop::refresh() and redraw() from main loop (main.cpy)
-- Added fixed dimensions: SCREEN_WIDTH 1404, SCREEN_HEIGHT 1872
-- No rm2fb or fbink dependencies
-- Added gesture_parser.cpy to FILES variable in Makefile (fixes undefined references)
+TECHNICAL DETAILS:
+- Pure C++ with only Linux input API (<linux/input.h>)
+- Opens /dev/input/event2 directly
+- Processes multitouch events (ABS_MT_* events)
+- Simple gesture detection without UI framework overhead
+- Hardcoded lamp command: draws 200x200 square at (500,500)
+
+DEPENDENCIES:
+- arm-linux-gnueabihf-g++ (ARM cross-compiler)
+- Linux kernel headers (for input.h)
+- That's it! No rmkit, no okp, no complex build system.
 
 FILES:
-- src/genie_lamp/main.cpy: Minimal event loop
-- src/genie_lamp/gesture_parser.cpy: Fixed dimensions, no FB
-- src/genie_lamp/genie_lamp.conf: Test config (3-finger tap = square)
-- src/genie_lamp/Makefile: FILES=main.cpy gesture_parser.cpy
+- src/genie_lamp/main.cpp: Complete standalone implementation (160 lines)
+- src/genie_lamp/Makefile: Simple direct compilation
 
-BUILD FIX:
-The Makefile must include BOTH main.cpy and gesture_parser.cpy in FILES variable.
-Original genie works with only main.cpy due to okp auto-detection, but genie_lamp
-requires explicit listing to avoid undefined reference errors during linking.
+OLD FILES (for reference):
+- main.cpy.old: Old rmkit-based version
+- gesture_parser.cpy.old: Old rmkit gesture parser
+- Makefile.rmkit: Old rmkit Makefile
 
-DO NOT build from src/genie_lamp - must build from resources/rmkit
+WHY STANDALONE:
+The original approach used rmkit's UI framework which caused:
+- Need to build rmkit.h first
+- Undefined references to UI symbols
+- Complex okp transpilation
+- Difficult debugging
+
+This standalone version eliminates ALL of that complexity.
