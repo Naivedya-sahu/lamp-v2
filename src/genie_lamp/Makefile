@@ -1,5 +1,5 @@
 EXE=genie_lamp
-FILES=main.cpy
+FILES=main.cpy gesture_parser.cpy
 
 include ../actions.make
 
