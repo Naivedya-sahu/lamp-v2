@@ -1,53 +1,63 @@
-GENIE_LAMP BUILD INSTRUCTIONS (STANDALONE VERSION)
+GENIE_LAMP BUILD & INSTALLATION
 
 OVERVIEW:
-genie_lamp is now a standalone C++ program with NO rmkit dependencies.
-It reads touch events directly from /dev/input/event2 and detects gestures.
+Standalone gesture detector with config file support and systemd service.
+- NO rmkit dependencies
+- Reads /dev/input/event2 directly
+- Config file at /opt/etc/genie_lamp.conf
+- Runs as systemd service on boot
 
-BUILD:
+QUICK START:
 1. cd src/genie_lamp
-2. make
-3. Binary: genie_lamp (in same directory)
+2. make              # Build
+3. make install      # Deploy binary + config + service
+4. make enable       # Enable service (start on boot)
+5. make start        # Start service now
 
-DEPLOY:
-  scp src/genie_lamp/genie_lamp root@10.11.99.1:/opt/bin/
+MAKEFILE TARGETS:
+  make             Build genie_lamp
+  make install     Deploy binary, config, and service file
+  make enable      Enable service (auto-start on boot)
+  make start       Start service now
+  make stop        Stop service
+  make status      Check service status
+  make logs        View service logs (live)
+  make clean       Remove binary
 
-RUN:
-  ssh root@10.11.99.1 /opt/bin/genie_lamp
+CONFIGURATION:
+Edit /opt/etc/genie_lamp.conf to add gestures:
 
-WHAT IT DOES:
-- Detects 3-finger tap gesture
-- Draws a square using lamp when detected
-- No configuration file needed
-- No framebuffer dependencies
-- No rmkit UI framework dependencies
+  # Example: 3-finger tap draws square
+  gesture=tap
+  fingers=3
+  command=echo -e "pen down 500 500\npen move 900 500..." | /opt/bin/lamp
+
+  # Add more gestures separated by blank lines
+
+MANUAL RUN (for testing):
+  ssh root@10.11.99.1 /opt/bin/genie_lamp /opt/etc/genie_lamp.conf
+
+SERVICE MANAGEMENT:
+  systemctl status genie_lamp    # Check status
+  systemctl start genie_lamp     # Start
+  systemctl stop genie_lamp      # Stop
+  systemctl restart genie_lamp   # Restart after config change
+  journalctl -u genie_lamp -f    # View logs
 
 TECHNICAL DETAILS:
-- Pure C++ with only Linux input API (<linux/input.h>)
-- Opens /dev/input/event2 directly
-- Processes multitouch events (ABS_MT_* events)
-- Simple gesture detection without UI framework overhead
-- Hardcoded lamp command: draws 200x200 square at (500,500)
-
-DEPENDENCIES:
-- arm-linux-gnueabihf-g++ (ARM cross-compiler)
-- Linux kernel headers (for input.h)
-- That's it! No rmkit, no okp, no complex build system.
+- Pure C++ with only Linux input API
+- Config file parser supports: gesture=tap, fingers=N, command=...
+- Simple multitouch gesture detection
+- No framebuffer, no rmkit UI framework
+- 254 lines of standalone code
 
 FILES:
-- src/genie_lamp/main.cpp: Complete standalone implementation (160 lines)
-- src/genie_lamp/Makefile: Simple direct compilation
+  main.cpp              Standalone implementation
+  genie_lamp.conf       Example config (3-finger tap = square)
+  genie_lamp.service    Systemd service file
+  Makefile              Build & deployment
 
-OLD FILES (for reference):
-- main.cpy.old: Old rmkit-based version
-- gesture_parser.cpy.old: Old rmkit gesture parser
-- Makefile.rmkit: Old rmkit Makefile
-
-WHY STANDALONE:
-The original approach used rmkit's UI framework which caused:
-- Need to build rmkit.h first
-- Undefined references to UI symbols
-- Complex okp transpilation
-- Difficult debugging
-
-This standalone version eliminates ALL of that complexity.
+DEPENDENCIES:
+  arm-linux-gnueabihf-g++ (ARM cross-compiler)
+  Linux kernel headers
+  That's it!
