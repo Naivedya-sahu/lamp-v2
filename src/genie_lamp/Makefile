@@ -1,39 +1,23 @@
-EXE=genie_lamp
-FILES=main.cpy
+# Standalone Makefile for genie_lamp
+# No rmkit dependencies - pure C++ compilation
 
-# This Makefile requires LAMP_V2_ROOT to be set due to spaces in the path
-# Use: LAMP_V2_ROOT="$(cd ../.. && pwd)" make
-# Or use the build_and_deploy.sh script
+CXX = arm-linux-gnueabihf-g++
+CXXFLAGS = -O2 -std=c++11 -Wall
+TARGET = genie_lamp
+SOURCE = main.cpp
 
-ifndef LAMP_V2_ROOT
-    $(error LAMP_V2_ROOT is not set. Run: LAMP_V2_ROOT=$$(cd ../.. && pwd) make)
-endif
+all: $(TARGET)
 
-RMKIT_SRC := $(LAMP_V2_ROOT)/resources/rmkit/src
-BUILD_DIR := $(RMKIT_SRC)/build
+$(TARGET): $(SOURCE)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SOURCE)
+	@echo "Build complete: $(TARGET)"
+	@ls -lh $(TARGET)
 
-# Build settings
-HOST?=10.11.99.1
-CROSS_TC?=arm-linux-gnueabihf
-CXX_BIN?=$(CROSS_TC)-g++
-APP=$(EXE)
+clean:
+	rm -f $(TARGET)
 
-# Compiler flags
-CPP_FLAGS=-ldl -pthread -lpthread -fdata-sections -ffunction-sections -Wl,--gc-sections -O2
+install: $(TARGET)
+	scp $(TARGET) root@10.11.99.1:/opt/bin/
+	@echo "Installed to remarkable at /opt/bin/$(TARGET)"
 
-# Default target
-all: compile_remarkable
-
-stb_obj:
-	mkdir -p "$(BUILD_DIR)"
-	"$(CXX_BIN)" -c "$(RMKIT_SRC)/vendor/stb/stb.cpp" -o "$(BUILD_DIR)/stb.arm.o" -fPIC -Os
-
-compile_remarkable: stb_obj
-	CXX="$(CXX_BIN)" okp -ig "RMKIT_IMPLEMENTATION" -ns -ni -for -d "$(RMKIT_SRC)/.$(APP)_cpp/" -o "$(BUILD_DIR)/$(EXE)" $(FILES) "$(BUILD_DIR)/stb.arm.o" -- -D"REMARKABLE=1" -D"RMKIT_IMPLEMENTATION" $(CPP_FLAGS)
-
-install:
-	make copy
-	make install_config
-
-install_config:
-	scp ./genie_lamp.conf root@${HOST}:/opt/etc/genie_lamp.conf
+.PHONY: all clean install
