@@ -1,5 +1,0 @@
-* RC Low-Pass Filter - Simplified Format
-* Format: COMP_TYPE REF NODE1 NODE2 [VALUE]
-VDC V1 VIN GND 5V
-R R1 VIN VOUT 10k
-C C1 VOUT GND 100nF
