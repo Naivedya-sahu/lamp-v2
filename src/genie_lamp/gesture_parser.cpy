@@ -21,7 +21,13 @@ namespace genie:
   void run_command(string command):
     debug "RUNNING COMMAND", command
     string cmd = command + " &"
-    _ := system(cmd.c_str())
+    c_str := cmd.c_str()
+    _ := system(c_str)
+
+    ui::TaskQueue::add_task([=]() {
+      usleep(1e3 * 50)
+      ui::MainLoop::reset_gestures()
+    })
 
   input::SwipeGesture* build_swipe_gesture(GestureConfigData gcd):
     g := new input::SwipeGesture()
