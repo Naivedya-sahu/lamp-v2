@@ -26,11 +26,11 @@ echo "Test 2: Lamp Executable"
 if ssh root@$RM2_IP "test -x /opt/bin/lamp"; then
     echo "✓ Lamp exists"
     echo "  Testing render (check RM2 screen)..."
-    ssh root@$RM2_IP 'echo "pen rectangle 100 100 200 200" | /opt/bin/lamp'
+    ssh root@$RM2_IP 'echo "pen rectangle 500 500 900 900" | /opt/bin/lamp'
     read -p "  Did rectangle appear? (y/n): " answer
     if [ "$answer" = "y" ]; then
         echo "✓ Lamp renders"
-        ssh root@$RM2_IP 'echo "eraser clear 100 100 200 200" | /opt/bin/lamp'
+        ssh root@$RM2_IP 'echo "eraser clear 500 500 900 900" | /opt/bin/lamp'
     else
         echo "✗ Lamp rendering failed"
         exit 1

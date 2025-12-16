@@ -18,17 +18,15 @@ def svg_to_lamp_commands(svg_path: Path, scale: int = 1, x: int = 0, y: int = 0,
     if not svg_to_lamp.exists():
         raise FileNotFoundError(f"svg_to_lamp.sh not found at {svg_to_lamp}")
     
+    # Build command with all arguments (script expects them in order)
     cmd = [
         "bash", str(svg_to_lamp),
         str(svg_path),
-        str(scale) if scale != 1 else "",
-        str(x) if x != 0 else "",
-        str(y) if y != 0 else "",
+        str(scale),
+        str(x),
+        str(y),
         str(tolerance)
     ]
-    
-    # Remove empty arguments
-    cmd = [arg for arg in cmd if arg]
     
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
