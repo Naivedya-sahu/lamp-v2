@@ -109,7 +109,7 @@ public:
     void run_draw_square_command() {
         // Draw a 200x200 square at position (500, 500) using lamp
         const char* command =
-            "echo '500 500 500 700 700 700 700 500 500 500' | /opt/bin/lamp &";
+            "echo 'pen down 500 500\npen move 900 500\npen move 900 900\npen move 500 900\npen move 500 500\npen up' | /opt/bin/lamp &";
 
         printf("Running command: %s\n", command);
         int ret = system(command);
