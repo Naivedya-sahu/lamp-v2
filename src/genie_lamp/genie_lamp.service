@@ -1,0 +1,14 @@
+[Unit]
+Description=genie_lamp gesture detector
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/opt/bin/genie_lamp /opt/etc/genie_lamp.conf
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
