@@ -1,0 +1,14 @@
+[Unit]
+Description=Symbol UI Mode Activation Detector
+After=xochitl.service
+
+[Service]
+Type=simple
+ExecStart=/opt/bin/genie_lamp /opt/etc/symbol_ui_activation.conf
+StandardOutput=journal
+StandardError=journal
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

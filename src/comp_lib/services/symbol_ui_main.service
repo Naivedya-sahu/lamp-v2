@@ -1,0 +1,13 @@
+[Unit]
+Description=Symbol UI Main Gesture Controller
+After=symbol_ui_activation.service
+
+[Service]
+Type=simple
+ExecStart=/opt/bin/genie_lamp /opt/etc/symbol_ui_main.conf
+StandardOutput=journal
+StandardError=journal
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
