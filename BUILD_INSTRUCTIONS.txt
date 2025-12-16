@@ -1,0 +1,31 @@
+GENIE_LAMP BUILD INSTRUCTIONS
+
+1. Go to rmkit directory:
+   cd resources/rmkit
+
+2. Build:
+   make genie_lamp TARGET=rm
+
+3. Binary will be at:
+   src/build/genie_lamp
+
+4. Deploy:
+   scp src/build/genie_lamp root@10.11.99.1:/opt/bin/
+   scp ../../src/genie_lamp/genie_lamp.conf root@10.11.99.1:/opt/etc/
+
+5. Run:
+   ssh root@10.11.99.1 /opt/bin/genie_lamp /opt/etc/genie_lamp.conf
+
+WHAT WAS CHANGED FROM ORIGINAL GENIE:
+- Removed framebuffer::get() calls (lines 30, 82, 120 in gesture_parser.cpy)
+- Removed ui::MainLoop::refresh() and redraw() (main.cpy)
+- Added fixed dimensions: SCREEN_WIDTH 1404, SCREEN_HEIGHT 1872
+- No rm2fb or fbink dependencies
+
+FILES:
+- src/genie_lamp/main.cpy: Minimal event loop
+- src/genie_lamp/gesture_parser.cpy: Fixed dimensions, no FB
+- src/genie_lamp/genie_lamp.conf: Test config (3-finger tap = square)
+- src/genie_lamp/Makefile: Standard rmkit Makefile
+
+DO NOT build from src/genie_lamp - must build from resources/rmkit
