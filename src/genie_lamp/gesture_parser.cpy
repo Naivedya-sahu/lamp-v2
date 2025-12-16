@@ -3,6 +3,9 @@ using input::SwipeGesture
 using input::TapGesture
 
 namespace genie:
+  // Fixed screen dimensions for RM2 - no framebuffer needed
+  #define SCREEN_WIDTH 1404
+  #define SCREEN_HEIGHT 1872
 
   struct GestureConfigData:
     string command = ""
@@ -15,47 +18,25 @@ namespace genie:
     string distance = ""
   ;
 
-  void run_lamp_commands(string lamp_cmds):
-    // Execute lamp commands by piping them to lamp
-    debug "RUNNING LAMP COMMANDS:", lamp_cmds
-    string cmd = "echo -e \"" + lamp_cmds + "\" | /opt/bin/lamp &"
-    c_str := cmd.c_str()
-    _ := system(c_str)
-
-    ui::TaskQueue::add_task([=]() {
-      usleep(1e3 * 50)
-      ui::MainLoop::reset_gestures()
-    })
-
   void run_command(string command):
     debug "RUNNING COMMAND", command
-    string cmd = command + "&"
-    c_str := cmd.c_str()
-    _ := system(c_str)
-
-    ui::TaskQueue::add_task([=]() {
-      usleep(1e3 * 50)
-      ui::MainLoop::reset_gestures()
-    })
+    string cmd = command + " &"
+    _ := system(cmd.c_str())
 
   input::SwipeGesture* build_swipe_gesture(GestureConfigData gcd):
-    // Fixed screen dimensions for RM2 - no rm2fb required
-    fw := 1404
-    fh := 1872
     g := new input::SwipeGesture()
     if gcd.fingers != "":
       g->fingers = atoi(gcd.fingers.c_str())
+
     if gcd.zone != "":
       tokens := str_utils::split(gcd.zone, ' ')
       if tokens.size() != 4:
         debug "ZONE MUST BE 4 FLOATS", gcd.zone
-
       else:
-        x1 := int(atof((const char*) tokens[0].c_str()) * fw)
-        y1 := int(atof((const char*) tokens[1].c_str()) * fh)
-        x2 := int(atof((const char*) tokens[2].c_str()) * fw)
-        y2 := int(atof((const char*) tokens[3].c_str()) * fh)
-
+        x1 := int(atof(tokens[0].c_str()) * SCREEN_WIDTH)
+        y1 := int(atof(tokens[1].c_str()) * SCREEN_HEIGHT)
+        x2 := int(atof(tokens[2].c_str()) * SCREEN_WIDTH)
+        y2 := int(atof(tokens[3].c_str()) * SCREEN_HEIGHT)
         g->set_coordinates(x1, y1, x2, y2)
 
     if gcd.direction == "left":
@@ -76,25 +57,13 @@ namespace genie:
     g->events.activate += PLS_LAMBDA(auto d) {
       if gcd.command == "":
         return
-
       run_command(gcd.command)
-
     }
 
-    debug "ADDED SWIPE GESTURE:"
-    debug "  command:", gcd.command
-    debug "  gesture:", gcd.gesture
-    debug "  fingers:", gcd.fingers
-    debug "  min_events:", gcd.min_events
-    debug "  zone:", g->zone.x1, g->zone.y1, g->zone.x2, g->zone.y2
-    debug "  direction:", gcd.direction
-    debug "  distance:", gcd.distance
+    debug "ADDED SWIPE GESTURE:", gcd.command
     return g
 
   input::TapGesture* build_tap_gesture(GestureConfigData gcd):
-    // Fixed screen dimensions for RM2 - no rm2fb required
-    fw := 1404
-    fh := 1872
     g := new input::TapGesture()
     if gcd.fingers != "":
       g->fingers = atoi(gcd.fingers.c_str())
@@ -106,45 +75,33 @@ namespace genie:
       tokens := str_utils::split(gcd.zone, ' ')
       if tokens.size() != 4:
         debug "ZONE MUST BE 4 FLOATS", gcd.zone
-
       else:
-        x1 := int(atof((const char*) tokens[0].c_str()) * fw)
-        y1 := int(atof((const char*) tokens[1].c_str()) * fh)
-        x2 := int(atof((const char*) tokens[2].c_str()) * fw)
-        y2 := int(atof((const char*) tokens[3].c_str()) * fh)
-
+        x1 := int(atof(tokens[0].c_str()) * SCREEN_WIDTH)
+        y1 := int(atof(tokens[1].c_str()) * SCREEN_HEIGHT)
+        x2 := int(atof(tokens[2].c_str()) * SCREEN_WIDTH)
+        y2 := int(atof(tokens[3].c_str()) * SCREEN_HEIGHT)
         g->set_coordinates(x1, y1, x2, y2)
 
     g->events.activate += PLS_LAMBDA(auto d) {
       if gcd.command == "":
         return
-
       run_command(gcd.command)
     }
 
-    debug "ADDED TAP GESTURE:"
-    debug "  command:", gcd.command
-    debug "  gesture:", gcd.gesture
-    debug "  fingers:", gcd.fingers
-    debug "  zone:", g->zone.x1, g->zone.y1, g->zone.x2, g->zone.y2
-    debug "  duration:", g->duration
+    debug "ADDED TAP GESTURE:", gcd.command
     return g
 
   void create_gesture(GestureConfigData gcd, vector<Gesture*> &gestures):
-    // Note: fw and fh are now handled within build_swipe_gesture and build_tap_gesture
-    if gcd.gesture != "":
-      if gcd.gesture == "swipe":
-        gestures.push_back(build_swipe_gesture(gcd))
-      else if gcd.gesture == "tap":
-        gestures.push_back(build_tap_gesture(gcd))
-      else:
-        debug "Unknown gesture type:", gcd.gesture
+    if gcd.gesture == "swipe":
+      gestures.push_back(build_swipe_gesture(gcd))
+    else if gcd.gesture == "tap":
+      gestures.push_back(build_tap_gesture(gcd))
+    else if gcd.gesture != "":
+      debug "Unknown gesture type:", gcd.gesture
 
   vector<Gesture*> parse_config(vector<string> &lines):
     GestureConfigData gcd
-
-    vector<Gesture*> gestures;
-
+    vector<Gesture*> gestures
 
     for auto line : lines:
       str_utils::trim(line)
@@ -178,4 +135,3 @@ namespace genie:
 
     create_gesture(gcd, gestures)
     return gestures
-
