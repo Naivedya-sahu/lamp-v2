@@ -2,7 +2,11 @@
 # Component Library Manager
 # Lists and renders electronic components
 
-COMPONENT_DIR="/home/user/lamp-v2/assets/components"
+# Get script directory and project root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+COMPONENT_DIR="$PROJECT_ROOT/assets/components"
 STATE_DIR="/tmp/genie_ui"
 COMPONENT_LIST="$STATE_DIR/components.txt"
 
@@ -48,7 +52,7 @@ render_component() {
     fi
 
     # Use svg2lamp converter
-    bash /home/user/lamp-v2/scripts/svg2lamp.sh "$svg_file" "$x" "$y" "$scale"
+    bash "$SCRIPT_DIR/svg2lamp.sh" "$svg_file" "$x" "$y" "$scale"
 }
 
 # List all components

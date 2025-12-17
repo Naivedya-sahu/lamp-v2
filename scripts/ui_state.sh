@@ -2,6 +2,10 @@
 # UI State Machine for Component Selection
 # Manages state and draws UI in bottom-right corner
 
+# Get script directory and project root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 # UI Configuration
 UI_X=1000              # Left edge of UI box
 UI_Y=1400              # Top edge of UI box
@@ -21,7 +25,7 @@ init_state() {
     mkdir -p "$STATE_DIR"
 
     # Build component list
-    bash /home/user/lamp-v2/scripts/component_library.sh build
+    bash "$SCRIPT_DIR/component_library.sh" build
 
     # Initialize state file if doesn't exist
     if [ ! -f "$STATE_FILE" ]; then
@@ -98,7 +102,7 @@ draw_list() {
     # Draw page info
     local current_page=$((page + 1))
     local total_pages=$(get_total_pages)
-    bash /home/user/lamp-v2/scripts/font_render.sh "PG ${current_page}/${total_pages}" $((UI_X + 10)) $((UI_Y + 10)) 0.3 | /opt/bin/lamp
+    bash "$SCRIPT_DIR/font_render.sh" "PG ${current_page}/${total_pages}" $((UI_X + 10)) $((UI_Y + 10)) 0.3 | /opt/bin/lamp
 
     # Draw list items
     for i in $(seq 0 $((ITEMS_PER_PAGE - 1))); do
@@ -106,7 +110,7 @@ draw_list() {
         [ $index -ge $total ] && break
 
         # Get component name
-        local name=$(bash /home/user/lamp-v2/scripts/component_library.sh get "$index")
+        local name=$(bash "$SCRIPT_DIR/component_library.sh" get "$index")
 
         # Highlight if selected
         if [ $index -eq $selected ]; then
@@ -117,7 +121,7 @@ draw_list() {
 
         # Draw item
         local text="$(cat /tmp/prefix.txt)$((index + 1)) $name"
-        bash /home/user/lamp-v2/scripts/font_render.sh "$text" $((UI_X + 10)) "$y_offset" "$TEXT_SCALE" | /opt/bin/lamp
+        bash "$SCRIPT_DIR/font_render.sh" "$text" $((UI_X + 10)) "$y_offset" "$TEXT_SCALE" | /opt/bin/lamp
 
         y_offset=$((y_offset + line_height))
     done
@@ -126,7 +130,7 @@ draw_list() {
 # Draw selected component preview
 draw_preview() {
     local selected=$(get_state selected)
-    local name=$(bash /home/user/lamp-v2/scripts/component_library.sh get "$selected")
+    local name=$(bash "$SCRIPT_DIR/component_library.sh" get "$selected")
 
     [ -z "$name" ] && return
 
@@ -134,7 +138,7 @@ draw_preview() {
     local preview_x=$((UI_X + UI_WIDTH / 2 - 50))
     local preview_y=$((UI_Y + 250))
 
-    bash /home/user/lamp-v2/scripts/component_library.sh render "$name" "$preview_x" "$preview_y" "$COMPONENT_SCALE" | /opt/bin/lamp
+    bash "$SCRIPT_DIR/component_library.sh" render "$name" "$preview_x" "$preview_y" "$COMPONENT_SCALE" | /opt/bin/lamp
 }
 
 # Redraw entire UI

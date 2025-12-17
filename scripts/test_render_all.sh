@@ -2,8 +2,12 @@
 # Test script to render all components and fonts
 # Tests rendering and erasing functionality
 
-COMPONENT_DIR="/home/user/lamp-v2/assets/components"
-FONT_DIR="/home/user/lamp-v2/assets/font"
+# Get script directory and project root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+COMPONENT_DIR="$PROJECT_ROOT/assets/components"
+FONT_DIR="$PROJECT_ROOT/assets/font"
 DELAY=2  # Seconds between renders
 
 echo "=== Component Rendering Test ==="
@@ -23,10 +27,10 @@ for svg_file in $COMPONENTS; do
     echo "Rendering: $name at ($x, $y)"
 
     # Render component
-    bash /home/user/lamp-v2/scripts/svg2lamp.sh "$svg_file" "$x" "$y" "1.0" | /opt/bin/lamp
+    bash "$SCRIPT_DIR/svg2lamp.sh" "$svg_file" "$x" "$y" "1.0" | /opt/bin/lamp
 
     # Also render its name
-    bash /home/user/lamp-v2/scripts/font_render.sh "$name" "$x" "$((y + 50))" "0.4" | /opt/bin/lamp
+    bash "$SCRIPT_DIR/font_render.sh" "$name" "$x" "$((y + 50))" "0.4" | /opt/bin/lamp
 
     # Wait a bit
     sleep "$DELAY"
@@ -35,8 +39,8 @@ for svg_file in $COMPONENTS; do
     echo "Erasing: $name"
     {
         echo "erase on"
-        bash /home/user/lamp-v2/scripts/svg2lamp.sh "$svg_file" "$x" "$y" "1.0"
-        bash /home/user/lamp-v2/scripts/font_render.sh "$name" "$x" "$((y + 50))" "0.4"
+        bash "$SCRIPT_DIR/svg2lamp.sh" "$svg_file" "$x" "$y" "1.0"
+        bash "$SCRIPT_DIR/font_render.sh" "$name" "$x" "$((y + 50))" "0.4"
         echo "erase off"
     } | /opt/bin/lamp
 
@@ -61,14 +65,14 @@ x=100
 y=800
 
 echo "Rendering alphabet: $ALPHABET"
-bash /home/user/lamp-v2/scripts/font_render.sh "$ALPHABET" "$x" "$y" "0.5" | /opt/bin/lamp
+bash "$SCRIPT_DIR/font_render.sh" "$ALPHABET" "$x" "$y" "0.5" | /opt/bin/lamp
 
 sleep "$DELAY"
 
 echo "Erasing alphabet"
 {
     echo "erase on"
-    bash /home/user/lamp-v2/scripts/font_render.sh "$ALPHABET" "$x" "$y" "0.5"
+    bash "$SCRIPT_DIR/font_render.sh" "$ALPHABET" "$x" "$y" "0.5"
     echo "erase off"
 } | /opt/bin/lamp
 

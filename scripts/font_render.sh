@@ -2,7 +2,11 @@
 # Font Text Renderer
 # Renders text using SVG font glyphs
 
-FONT_DIR="/home/user/lamp-v2/assets/font"
+# Get script directory and project root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+FONT_DIR="$PROJECT_ROOT/assets/font"
 CHAR_WIDTH=25  # Approximate character width for spacing
 CHAR_HEIGHT=40 # Approximate character height
 
@@ -22,7 +26,7 @@ render_char() {
     fi
 
     # Render using svg2lamp
-    bash /home/user/lamp-v2/scripts/svg2lamp.sh "$font_file" "$x" "$y" "$scale"
+    bash "$SCRIPT_DIR/svg2lamp.sh" "$font_file" "$x" "$y" "$scale"
 }
 
 # Render text string
